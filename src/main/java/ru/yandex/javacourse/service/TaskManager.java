@@ -9,6 +9,7 @@ import java.util.List;
 public interface TaskManager {
     // Методы для задач
     List<Task> getAllTasks();
+
     void deleteAllTasks();
 
     Task getTaskById(int id);
