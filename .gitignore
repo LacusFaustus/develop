@@ -55,3 +55,4 @@ bin/
 >>>>>>> bc34bcf (Implement InMemoryHistoryManager with custom linked list)
 ".idea/" 
 .idea/ 
+"target/" 
