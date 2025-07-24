@@ -14,11 +14,10 @@ class TaskTest {
     }
 
     @Test
-    @DisplayName("Равенство задач с одинаковым ID")
     void tasksWithSameIdShouldBeEqual() {
-        task.setId(1);
-        anotherTask.setId(1);
-        assertEquals(task, anotherTask);
+        Task task1 = new Task(1, "Task 1", "Description", Status.NEW);
+        Task task2 = new Task(1, "Task 1", "Description", Status.NEW);
+        assertEquals(task1, task2, "Задачи с одинаковым id должны быть равны");
     }
 
     @Test

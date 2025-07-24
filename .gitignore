@@ -1,5 +1,5 @@
-
-/target/ 
-/tests/ 
-*.iml 
-/src/main/resources/ 
+/target/
+/.idea/
+*.iml
+/lib/
+sources.txt

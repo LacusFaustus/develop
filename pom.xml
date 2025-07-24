@@ -31,23 +31,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${checkstyle.plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${checkstyle.version}</version>
-                    </dependency>
-                </dependencies>
+                <version>3.2.1</version>
                 <configuration>
-                    <configLocation>src/main/resources/checkstyle.xml</configLocation>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
+                    <configLocation>checkstyle.xml</configLocation>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
