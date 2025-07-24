@@ -1,39 +1,35 @@
 package ru.yandex.javacourse.service;
 
-import org.junit.jupiter.api.Test;
-import ru.yandex.javacourse.model.Epic;
-import ru.yandex.javacourse.model.Subtask;
-import ru.yandex.javacourse.model.Task;
-import ru.yandex.javacourse.service.InMemoryTaskManager;
-import ru.yandex.javacourse.service.TaskManager;
-
+import org.junit.jupiter.api.*;
+import ru.yandex.javacourse.model.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskManagerTest {
-    private TaskManager taskManager = new InMemoryTaskManager();
+    private TaskManager manager;
 
-    @Test
-    void epicShouldNotContainNonExistentSubtasks() {
-        Epic epic = new Epic("Epic", "Description");
-        taskManager.createEpic(epic);
-
-        Subtask subtask = new Subtask("Subtask", "Description", epic.getId());
-        taskManager.createSubtask(subtask);
-
-        taskManager.deleteSubtask(subtask.getId());
-        assertFalse(epic.getSubtaskIds().contains(subtask.getId()));
+    @BeforeEach
+    void setUp() {
+        manager = new InMemoryTaskManager();
     }
 
     @Test
-    void taskFieldsChangeShouldNotAffectManagerData() {
+    @DisplayName("Изменения задачи не влияют на менеджер")
+    void taskChangesShouldNotAffectManager() {
         Task task = new Task("Original", "Description");
-        taskManager.createTask(task);
-
+        int taskId = manager.createTask(task);
         task.setName("Modified");
-        task.setDescription("Modified description");
+        Task saved = manager.getTaskById(taskId);
+        assertEquals("Original", saved.getName());
+    }
 
-        Task savedTask = taskManager.getTask(task.getId());
-        assertEquals("Original", savedTask.getName());
-        assertEquals("Description", savedTask.getDescription());
+    @Test
+    @DisplayName("Удаление подзадачи из эпика")
+    void shouldRemoveSubtaskFromEpic() {
+        Epic epic = new Epic("Epic", "Description");
+        int epicId = manager.createEpic(epic);
+        Subtask subtask = new Subtask("Subtask", "Description", epicId);
+        int subtaskId = manager.createSubtask(subtask);
+        manager.deleteSubtaskById(subtaskId);
+        assertFalse(manager.getEpicById(epicId).getSubtaskIds().contains(subtaskId));
     }
 }
