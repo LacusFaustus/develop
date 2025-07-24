@@ -1,8 +1,13 @@
 package ru.yandex.javacourse.service;
 
-import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import ru.yandex.javacourse.model.Task;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.service.TaskManager;  // исправленный импорт
 
 class InMemoryTaskManagerTest {
     private TaskManager manager;
