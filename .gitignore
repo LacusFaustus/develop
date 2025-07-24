@@ -3,3 +3,5 @@
 *.iml
 /lib/
 sources.txt
+"target/" 
+"src/main/resources/" 
