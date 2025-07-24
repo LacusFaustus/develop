@@ -1,10 +1,14 @@
 package ru.yandex.javacourse.service;
 
 import ru.yandex.javacourse.model.*;
+
 import java.util.List;
 
+/**
+ * Интерфейс для управления задачами, эпиками и подзадачами.
+ */
 public interface TaskManager {
-    // Task operations
+    // Управление задачами
     List<Task> getAllTasks();
     Task getTaskById(int id);
     int createTask(Task task);
@@ -12,7 +16,7 @@ public interface TaskManager {
     void deleteTaskById(int id);
     void deleteAllTasks();
 
-    // Epic operations
+    // Управление эпиками
     List<Epic> getAllEpics();
     Epic getEpicById(int id);
     int createEpic(Epic epic);
@@ -20,7 +24,7 @@ public interface TaskManager {
     void deleteEpicById(int id);
     void deleteAllEpics();
 
-    // Subtask operations
+    // Управление подзадачами
     List<Subtask> getAllSubtasks();
     Subtask getSubtaskById(int id);
     int createSubtask(Subtask subtask);
@@ -28,7 +32,7 @@ public interface TaskManager {
     void deleteSubtaskById(int id);
     void deleteAllSubtasks();
 
-    // Additional methods
+    // Дополнительные методы
     List<Subtask> getSubtasksByEpicId(int epicId);
     List<Task> getHistory();
 }

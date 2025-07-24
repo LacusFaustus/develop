@@ -1,25 +1,36 @@
 package ru.yandex.javacourse.service;
 
 import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskManagerTest {
     private TaskManager manager;
+    private Task task;
 
     @BeforeEach
     void setUp() {
         manager = new InMemoryTaskManager();
+        task = new Task("Original", "Description");
     }
 
     @Test
-    @DisplayName("Изменения задачи не влияют на менеджер")
+    @DisplayName("Изменения задачи не должны влиять на менеджер")
     void taskChangesShouldNotAffectManager() {
-        Task task = new Task("Original", "Description");
+        // Создаем задачу в менеджере
         int taskId = manager.createTask(task);
-        task.setName("Modified");
+
+        // Получаем копию задачи из менеджера
         Task saved = manager.getTaskById(taskId);
-        assertEquals("Original", saved.getName());
+
+        // Модифицируем локальную копию
+        saved.setName("Modified");
+
+        // Проверяем, что задача в менеджере не изменилась
+        Task fromManager = manager.getTaskById(taskId);
+        assertEquals("Original", fromManager.getName());
     }
 
     @Test

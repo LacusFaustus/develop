@@ -4,7 +4,8 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
-    private Task task, anotherTask;
+    private Task task;
+    private Task anotherTask;
 
     @BeforeEach
     void setUp() {

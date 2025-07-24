@@ -3,6 +3,10 @@ package ru.yandex.javacourse.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс эпика - специального типа задачи, которая содержит подзадачи.
+ * Статус эпика рассчитывается на основе статусов его подзадач.
+ */
 public class Epic extends Task {
     private final List<Integer> subtaskIds = new ArrayList<>();
 
@@ -10,8 +14,9 @@ public class Epic extends Task {
         super(name, description);
     }
 
+    // Методы для работы с подзадачами
     public List<Integer> getSubtaskIds() {
-        return subtaskIds;
+        return new ArrayList<>(subtaskIds); // Возвращаем копию для защиты от изменений
     }
 
     public void addSubtaskId(int id) {
@@ -28,6 +33,7 @@ public class Epic extends Task {
         subtaskIds.clear();
     }
 
+    // Метод для обновления статуса эпика
     public void updateStatus(List<Subtask> subtasks) {
         if (subtasks.isEmpty()) {
             setStatus(Status.NEW);
