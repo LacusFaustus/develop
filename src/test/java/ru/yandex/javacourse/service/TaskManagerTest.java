@@ -1,3 +1,5 @@
+package ru.yandex.javacourse.service;
+
 import org.junit.jupiter.api.Test;
 import ru.yandex.javacourse.model.Epic;
 import ru.yandex.javacourse.model.Subtask;
