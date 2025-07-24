@@ -7,14 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
     private TaskManager manager;
     private Task task;
-    private Epic epic;
     private Subtask subtask;
 
     @BeforeEach
     void setUp() {
         manager = new InMemoryTaskManager();
         task = new Task("Test task", "Test description");
-        epic = new Epic("Test epic", "Test description");
+        Epic epic = new Epic("Test epic", "Test description");
         manager.createEpic(epic);
         subtask = new Subtask("Test subtask", "Test description", epic.getId());
     }
