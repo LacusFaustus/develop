@@ -1,11 +1,9 @@
 package main.java.ru.yandex.javacourse.service;
 
+import main.java.ru.yandex.javacourse.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import main.java.ru.yandex.javacourse.model.Epic;
-import main.java.ru.yandex.javacourse.model.Subtask;
-import main.java.ru.yandex.javacourse.model.Task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,7 +41,8 @@ class InMemoryTaskManagerTest {
     @DisplayName("Should update task status")
     void shouldUpdateTaskStatus() {
         int taskId = manager.createTask(task);
-        Task updatedTask = new Task("Updated", "Updated", taskId, Status.DONE);
+        // Исправленный конструктор - сначала id, затем остальные параметры
+        Task updatedTask = new Task(taskId, "Updated", "Updated", Status.DONE);
         manager.updateTask(updatedTask);
         assertEquals(Status.DONE, manager.getTaskById(taskId).getStatus(),
                 "Статус задачи должен обновиться на DONE");

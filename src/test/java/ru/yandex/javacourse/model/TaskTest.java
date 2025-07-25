@@ -3,6 +3,7 @@ package test.java.ru.yandex.javacourse.model;
 import main.java.ru.yandex.javacourse.model.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+import main.java.ru.yandex.javacourse.model.Status;
 
 class TaskTest {
     private Task task;

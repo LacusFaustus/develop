@@ -5,15 +5,12 @@ import main.java.ru.yandex.javacourse.service.InMemoryHistoryManager;
 import main.java.ru.yandex.javacourse.service.InMemoryTaskManager;
 import main.java.ru.yandex.javacourse.service.TaskManager;
 
-public class Managers
-{
-    public static TaskManager getDefault()
-    {
+public class Managers {
+    public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
 
-    public static HistoryManager getDefaultHistory()
-    {
+    public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 }
