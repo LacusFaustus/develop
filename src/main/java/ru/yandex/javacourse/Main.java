@@ -7,18 +7,28 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+        TaskManager manager = Managers.getDefault();
 
-        Task task = new Task("Задача 1", "Описание задачи 1");
-        taskManager.createTask(task);
+        // Создаем задачи
+        Task task = new Task("Помыть посуду", "Помыть всю посуду на кухне");
+        int taskId = manager.createTask(task);
 
-        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
-        int epicId = taskManager.createEpic(epic);
+        // Создаем эпик
+        Epic epic = new Epic("Переезд", "Организация переезда в другой город");
+        int epicId = manager.createEpic(epic);
 
-        Subtask subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", epicId);
-        taskManager.createSubtask(subtask);
+        // Создаем подзадачи
+        Subtask subtask1 = new Subtask("Собрать коробки", "Купить и собрать коробки", epicId);
+        int subtask1Id = manager.createSubtask(subtask1);
 
-        List<Task> tasks = taskManager.getAllTasks();
-        System.out.println(tasks);
+        Subtask subtask2 = new Subtask("Упаковать вещи", "Аккуратно упаковать все вещи", epicId);
+        int subtask2Id = manager.createSubtask(subtask2);
+
+        // Выводим информацию
+        System.out.println("Все задачи: " + manager.getAllTasks());
+        System.out.println("Все эпики: " + manager.getAllEpics());
+        System.out.println("Все подзадачи: " + manager.getAllSubtasks());
+        System.out.println("Подзадачи эпика: " + manager.getSubtasksByEpicId(epicId));
+        System.out.println("История: " + manager.getHistory());
     }
 }

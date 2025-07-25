@@ -30,7 +30,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createTask(Task task) {
         int newId = ++idCounter;
-        Task newTask = new Task(newId, task.getName(), task.getDescription(), task.getStatus());
+        Task newTask = new Task(newId, task.getName(), task.getDescription(), Status.NEW);
         tasks.put(newId, newTask);
         return newId;
     }
@@ -73,7 +73,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int createEpic(Epic epic) {
         int newId = ++idCounter;
         Epic newEpic = new Epic(epic.getName(), epic.getDescription());
-        newEpic.setId(newId); // Устанавливаем ID через наследуемый метод
+        newEpic.setId(newId);
         epics.put(newId, newEpic);
         return newId;
     }
@@ -128,13 +128,11 @@ public class InMemoryTaskManager implements TaskManager {
             return -1;
         }
         int newId = ++idCounter;
-        Subtask newSubtask = new Subtask(
-                newId,
+        Subtask newSubtask = new Subtask(newId,
                 subtask.getName(),
                 subtask.getDescription(),
-                subtask.getStatus(),
-                subtask.getEpicId()
-        );
+                Status.NEW,
+                subtask.getEpicId());
         subtasks.put(newId, newSubtask);
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtaskId(newId);
@@ -198,6 +196,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         List<Subtask> epicSubtasks = getSubtasksByEpicId(epicId);
-        epic.updateStatus(epicSubtasks); // Используем метод updateStatus из класса Epic
+        epic.updateStatus(epicSubtasks);
     }
 }
