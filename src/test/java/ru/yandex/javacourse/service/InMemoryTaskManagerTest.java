@@ -1,21 +1,24 @@
 package ru.yandex.javacourse.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import ru.yandex.javacourse.model.Task;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import ru.yandex.javacourse.model.Epic;
 import ru.yandex.javacourse.model.Subtask;
-import ru.yandex.javacourse.service.TaskManager;  // исправленный импорт
+import ru.yandex.javacourse.model.Task;
 
-class InMemoryTaskManagerTest {
+class InMemoryTaskManagerTest
+{
     private TaskManager manager;
     private Task task;
     private Subtask subtask;
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         manager = new InMemoryTaskManager();
         task = new Task("Test task", "Test description");
         Epic epic = new Epic("Test epic", "Test description");
@@ -25,7 +28,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     @DisplayName("Должен создавать и возвращать задачу с тем же ID")
-    void shouldCreateAndRetrieveTaskWithSameId() {
+    void shouldCreateAndRetrieveTaskWithSameId()
+    {
         int taskId = manager.createTask(task);
         Task retrieved = manager.getTaskById(taskId);
         assertEquals(taskId, retrieved.getId());
@@ -33,7 +37,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     @DisplayName("Должен создавать и возвращать подзадачу")
-    void shouldCreateAndRetrieveSubtask() {
+    void shouldCreateAndRetrieveSubtask()
+    {
         int subtaskId = manager.createSubtask(subtask);
         Subtask retrieved = manager.getSubtaskById(subtaskId);
         assertEquals(subtaskId, retrieved.getId());
