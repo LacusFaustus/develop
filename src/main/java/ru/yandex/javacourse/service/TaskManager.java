@@ -1,10 +1,12 @@
 package main.java.ru.yandex.javacourse.service;
 
-import main.java.ru.yandex.javacourse.model.*;
-
 import java.util.List;
+import main.java.ru.yandex.javacourse.model.Epic;
+import main.java.ru.yandex.javacourse.model.Subtask;
+import main.java.ru.yandex.javacourse.model.Task;
 
-public interface TaskManager {
+public interface TaskManager
+{
     List<Task> getAllTasks();
     Task getTaskById(int id);
     int createTask(Task task);

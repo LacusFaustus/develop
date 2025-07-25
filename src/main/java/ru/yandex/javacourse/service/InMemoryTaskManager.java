@@ -1,16 +1,20 @@
 package main.java.ru.yandex.javacourse.service;
 
-import main.java.ru.yandex.javacourse.model.*;
-import main.java.ru.yandex.javacourse.util.Managers;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import main.java.ru.yandex.javacourse.model.Epic;
+import main.java.ru.yandex.javacourse.model.Subtask;
+import main.java.ru.yandex.javacourse.model.Task;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager
+{
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private int idCounter = 1;
+    private int idCounter = 0;
 
     // Task methods
     @Override

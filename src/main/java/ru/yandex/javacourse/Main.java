@@ -1,41 +1,28 @@
 package main.java.ru.yandex.javacourse;
 
-import main.java.ru.yandex.javacourse.model.*;
+import java.util.List;
+import main.java.ru.yandex.javacourse.model.Epic;
+import main.java.ru.yandex.javacourse.model.Subtask;
+import main.java.ru.yandex.javacourse.model.Task;
 import main.java.ru.yandex.javacourse.service.TaskManager;
 import main.java.ru.yandex.javacourse.util.Managers;
 
-import java.util.List;
-
-public class Main {
-    public static void main(String[] args) {
+public class Main
+{
+    public static void main(String[] args)
+    {
         TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task("Task 1", "Description 1");
-        Task task2 = new Task("Task 2", "Description 2");
-        int task1Id = taskManager.createTask(task1);
-        int task2Id = taskManager.createTask(task2);
+        Task task = new Task("Задача 1", "Описание задачи 1");
+        taskManager.createTask(task);
 
-        Epic epic1 = new Epic("Epic with subtasks", "Description");
-        int epic1Id = taskManager.createEpic(epic1);
+        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
+        taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask("Subtask 1", "Description", epic1Id);
-        Subtask subtask2 = new Subtask("Subtask 2", "Description", epic1Id);
-        taskManager.createSubtask(subtask1);
-        taskManager.createSubtask(subtask2);
+        Subtask subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", epic.getId());
+        taskManager.createSubtask(subtask);
 
-        taskManager.getTaskById(task1Id);
-        taskManager.getEpicById(epic1Id);
-        printHistory(taskManager.getHistory());
-
-        subtask1.setStatus(Status.IN_PROGRESS);
-        taskManager.updateSubtask(subtask1);
-        System.out.println("Epic status after subtask update: " +
-                taskManager.getEpicById(epic1Id).getStatus());
-    }
-
-    private static void printHistory(List<Task> history) {
-        System.out.println("History:");
-        history.forEach(System.out::println);
-        System.out.println();
+        List<Task> tasks = taskManager.getAllTasks();
+        System.out.println(tasks);
     }
 }
