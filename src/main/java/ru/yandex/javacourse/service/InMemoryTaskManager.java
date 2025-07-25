@@ -1,7 +1,7 @@
-package ru.yandex.javacourse.service;
+package main.java.ru.yandex.javacourse.service;
 
-import ru.yandex.javacourse.model.*;
-import ru.yandex.javacourse.util.Managers;
+import main.java.ru.yandex.javacourse.model.*;
+import main.java.ru.yandex.javacourse.util.Managers;
 import java.util.*;
 import java.util.stream.Collectors;
 

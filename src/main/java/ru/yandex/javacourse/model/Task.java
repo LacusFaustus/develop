@@ -1,4 +1,4 @@
-package ru.yandex.javacourse.model;
+package main.java.ru.yandex.javacourse.model;
 
 import java.util.Objects;
 

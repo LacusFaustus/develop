@@ -1,19 +1,19 @@
-package ru.yandex.javacourse.service;
+package test.java.ru.yandex.javacourse.service;
 
 import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.Task;
+import main.java.ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тестирование InMemoryHistoryManager")
 class InMemoryHistoryManagerTest {
-    private HistoryManager historyManager;
+    private main.java.ru.yandex.javacourse.service.HistoryManager historyManager;
     private Task task1, task2, task3;
 
     @BeforeEach
     void setUp() {
-        historyManager = new InMemoryHistoryManager();
+        historyManager = new main.java.ru.yandex.javacourse.service.InMemoryHistoryManager();
         task1 = new Task("Task 1", "Description 1");
         task1.setId(1);
         task2 = new Task("Task 2", "Description 2");

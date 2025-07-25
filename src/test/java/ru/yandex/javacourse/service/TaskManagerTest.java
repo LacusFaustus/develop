@@ -1,18 +1,18 @@
-package ru.yandex.javacourse.service;
+package test.java.ru.yandex.javacourse.service;
 
 import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.Epic;
-import ru.yandex.javacourse.model.Subtask;
-import ru.yandex.javacourse.model.Task;
+import main.java.ru.yandex.javacourse.model.Epic;
+import main.java.ru.yandex.javacourse.model.Subtask;
+import main.java.ru.yandex.javacourse.model.Task;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskManagerTest {
-    private TaskManager manager;
+    private main.java.ru.yandex.javacourse.service.TaskManager manager;
     private Task task;
 
     @BeforeEach
     void setUp() {
-        manager = new InMemoryTaskManager();
+        manager = new main.java.ru.yandex.javacourse.service.InMemoryTaskManager();
         task = new Task("Original", "Description");
     }
 

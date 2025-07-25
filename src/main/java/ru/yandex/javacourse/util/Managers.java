@@ -1,13 +1,7 @@
-package ru.yandex.javacourse.util;
+package main.java.ru.yandex.javacourse.util;
 
-import ru.yandex.javacourse.service.HistoryManager;
-import ru.yandex.javacourse.service.InMemoryHistoryManager;
-import ru.yandex.javacourse.service.InMemoryTaskManager;
-import ru.yandex.javacourse.service.TaskManager;
+import main.java.ru.yandex.javacourse.service.*;
 
-/**
- * Утилитарный класс для получения реализаций менеджеров.
- */
 public class Managers {
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();

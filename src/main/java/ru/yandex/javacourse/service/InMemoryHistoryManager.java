@@ -1,11 +1,8 @@
-package ru.yandex.javacourse.service;
+package main.java.ru.yandex.javacourse.service;
 
-import ru.yandex.javacourse.model.Task;
+import main.java.ru.yandex.javacourse.model.Task;
 import java.util.*;
 
-/**
- * Реализация менеджера истории с использованием собственного двусвязного списка.
- */
 public class InMemoryHistoryManager implements HistoryManager {
     private static class Node {
         Task data;
