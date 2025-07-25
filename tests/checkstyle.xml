@@ -9,19 +9,32 @@
   <!-- Проверки форматирования -->
   <module name="LineLength">
     <property name="max" value="120"/>
-    <property name="ignorePattern" value="^package.*|^import.*"/>
+    <property name="ignorePattern" value="^package.*|^import.*|^ *//.*"/>
   </module>
 
   <!-- Проверки кода -->
   <module name="TreeWalker">
     <!-- Проверки импортов -->
-    <module name="AvoidStarImport"/>
+    <module name="AvoidStarImport">
+      <property name="excludes" value="org.junit.jupiter.api.*,static org.junit.jupiter.api.Assertions.*"/>
+    </module>
     <module name="UnusedImports"/>
     <module name="RedundantImport"/>
+    <module name="ImportOrder">
+      <property name="groups" value="/^java\./,javax,org,/^com\./,/^ru\.yandex/"/>
+      <property name="ordered" value="true"/>
+    </module>
 
     <!-- Базовые проверки стиля -->
-    <module name="LeftCurly"/>
-    <module name="RightCurly"/>
-    <module name="WhitespaceAround"/>
+    <module name="LeftCurly">
+      <property name="option" value="nl"/>
+    </module>
+    <module name="RightCurly">
+      <property name="option" value="same"/>
+    </module>
+    <module name="WhitespaceAround">
+      <property name="allowEmptyConstructors" value="true"/>
+      <property name="allowEmptyMethods" value="true"/>
+    </module>
   </module>
 </module>
