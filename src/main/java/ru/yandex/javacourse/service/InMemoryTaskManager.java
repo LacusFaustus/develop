@@ -1,15 +1,8 @@
 package main.java.ru.yandex.javacourse.service;
 
 import main.java.ru.yandex.javacourse.model.*;
-import main.java.ru.yandex.javacourse.util.Managers; import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import main.java.ru.yandex.javacourse.model.Epic;
-import main.java.ru.yandex.javacourse.model.Subtask;
-import main.java.ru.yandex.javacourse.model.Task;
-import java.util.Collections;
-import java.util.Objects;
+import main.java.ru.yandex.javacourse.util.Managers;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -30,26 +23,20 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
-            // Возвращаем глубокую копию задачи
-            return new Task(task.getId(), task.getName(),
-                    task.getDescription(), task.getStatus());
         }
-        return null;
+        return task;
     }
 
     @Override
     public int createTask(Task task) {
-        if (task == null) {
-            throw new IllegalArgumentException("Task cannot be null");
-        }
-        task.setId(idCounter++);
+        task.setId(++idCounter);
         tasks.put(task.getId(), task);
         return task.getId();
     }
 
     @Override
     public void updateTask(Task updatedTask) {
-        if (updatedTask != null && tasks.containsKey(updatedTask.getId())) {
+        if (tasks.containsKey(updatedTask.getId())) {
             tasks.put(updatedTask.getId(), updatedTask);
         }
     }
@@ -77,30 +64,21 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         if (epic != null) {
             historyManager.add(epic);
-            // Возвращаем глубокую копию эпика
-            Epic copy = new Epic(epic.getName(), epic.getDescription());
-            copy.setId(epic.getId());
-            copy.setStatus(epic.getStatus());
-            copy.getSubtaskIds().addAll(epic.getSubtaskIds());
-            return copy;
         }
-        return null;
+        return epic;
     }
 
     @Override
     public int createEpic(Epic epic) {
-        if (epic == null) {
-            throw new IllegalArgumentException("Epic cannot be null");
-        }
-        epic.setId(idCounter++);
+        epic.setId(++idCounter);
         epics.put(epic.getId(), epic);
         return epic.getId();
     }
 
     @Override
     public void updateEpic(Epic updatedEpic) {
-        if (updatedEpic != null && epics.containsKey(updatedEpic.getId())) {
-            Epic epic = epics.get(updatedEpic.getId());
+        Epic epic = epics.get(updatedEpic.getId());
+        if (epic != null) {
             epic.setName(updatedEpic.getName());
             epic.setDescription(updatedEpic.getDescription());
         }
@@ -137,36 +115,26 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtasks.get(id);
         if (subtask != null) {
             historyManager.add(subtask);
-            // Возвращаем глубокую копию подзадачи
-            return new Subtask(subtask.getId(), subtask.getName(),
-                    subtask.getDescription(), subtask.getStatus(),
-                    subtask.getEpicId());
         }
-        return null;
+        return subtask;
     }
 
     @Override
     public int createSubtask(Subtask subtask) {
-        if (subtask == null) {
-            throw new IllegalArgumentException("Subtask cannot be null");
-        }
         if (!epics.containsKey(subtask.getEpicId())) {
             return -1;
         }
-
-        subtask.setId(idCounter++);
+        subtask.setId(++idCounter);
         subtasks.put(subtask.getId(), subtask);
-
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtaskId(subtask.getId());
         updateEpicStatus(epic.getId());
-
         return subtask.getId();
     }
 
     @Override
     public void updateSubtask(Subtask updatedSubtask) {
-        if (updatedSubtask != null && subtasks.containsKey(updatedSubtask.getId())) {
+        if (subtasks.containsKey(updatedSubtask.getId())) {
             subtasks.put(updatedSubtask.getId(), updatedSubtask);
             updateEpicStatus(updatedSubtask.getEpicId());
         }
