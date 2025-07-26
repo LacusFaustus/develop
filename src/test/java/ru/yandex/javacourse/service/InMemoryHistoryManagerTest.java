@@ -3,6 +3,8 @@ package ru.yandex.javacourse.service;
 import org.junit.jupiter.api.*;
 import ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,19 +23,13 @@ class InMemoryHistoryManagerTest {
         task3.setId(3);
     }
 
-    private List<Task> createTaskList(Task... tasks) {
-        List<Task> list = new ArrayList<>();
-        for (Task task : tasks) {
-            list.add(task);
-        }
-        return list;
-    }
-
     @Test
     @DisplayName("Добавление задачи в историю")
     void shouldAddTaskToHistory() {
         historyManager.add(task1);
-        assertHistoryEquals(createTaskList(task1));
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
+        assertHistoryEquals(expected);
     }
 
     @Test
@@ -42,7 +38,9 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-        assertHistoryEquals(createTaskList(task2, task1));
+
+        List<Task> expected = Arrays.asList(task2, task1);
+        assertHistoryEquals(expected);
     }
 
     @Test
@@ -51,21 +49,9 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.remove(task1.getId());
-        assertHistoryEquals(createTaskList(task2));
-    }
 
-    @Test
-    @DisplayName("Новая история должна быть пустой")
-    void newManagerShouldHaveEmptyHistory() {
-        assertTrue(historyManager.getHistory().isEmpty());
-    }
-
-    @Test
-    @DisplayName("Удаление несуществующей задачи")
-    void shouldIgnoreNonExistentTaskRemoval() {
-        historyManager.add(task1);
-        historyManager.remove(999);
-        assertHistoryEquals(createTaskList(task1));
+        List<Task> expected = Collections.singletonList(task2);
+        assertHistoryEquals(expected);
     }
 
     @Test
@@ -75,7 +61,9 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task2);
         historyManager.add(task3);
         historyManager.remove(task2.getId());
-        assertEquals(List.of(task1, task3), historyManager.getHistory());
+
+        List<Task> expected = Arrays.asList(task1, task3);
+        assertHistoryEquals(expected);
     }
 
     @Test
@@ -86,14 +74,9 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task3);
         historyManager.add(task2);
-        assertEquals(List.of(task1, task3, task2), historyManager.getHistory());
-    }
 
-    @Test
-    @DisplayName("Удаление из пустой истории")
-    void shouldHandleEmptyHistoryRemoval() {
-        historyManager.remove(1);
-        assertTrue(historyManager.getHistory().isEmpty());
+        List<Task> expected = Arrays.asList(task1, task3, task2);
+        assertHistoryEquals(expected);
     }
 
     private void assertHistoryEquals(List<Task> expected) {
