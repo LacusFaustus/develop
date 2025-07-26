@@ -3,6 +3,7 @@ package ru.yandex.javacourse.service;
 import org.junit.jupiter.api.*;
 import ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,7 +79,7 @@ class InMemoryHistoryManagerTest {
 
         historyManager.remove(task2.getId());
 
-        List<Task> expected = List.of(task1, task3);
+        List<Task> expected = Arrays.asList(task1, task3); // Заменено List.of на Arrays.asList
         assertHistoryEquals(expected);
     }
 
@@ -91,7 +92,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task3);
         historyManager.add(task2);
 
-        List<Task> expected = List.of(task1, task3, task2);
+        List<Task> expected = Arrays.asList(task1, task3, task2); // Заменено List.of на Arrays.asList
         assertHistoryEquals(expected);
     }
 
@@ -101,7 +102,6 @@ class InMemoryHistoryManagerTest {
         historyManager.remove(1);
         assertTrue(historyManager.getHistory().isEmpty());
     }
-
 
     private void assertHistoryEquals(List<Task> expected) {
         List<Task> actual = historyManager.getHistory();
