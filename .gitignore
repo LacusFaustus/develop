@@ -1,0 +1,10 @@
+# IDE files 
+.idea/ 
+*.iml 
+out/ 
+ 
+# Build files 
+target/ 
+bin/ 
+*.class 
+*.log 
