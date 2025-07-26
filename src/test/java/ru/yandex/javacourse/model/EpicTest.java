@@ -1,9 +1,5 @@
 package ru.yandex.javacourse.model;
 
-<<<<<<< HEAD
-=======
-import ru.yandex.javacourse.model.*;
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +17,7 @@ class EpicTest {
     }
 
     @Test
-<<<<<<< HEAD
     @DisplayName("Should update epic status correctly")
-=======
-    @DisplayName("Должен правильно обновлять статус эпика")
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     void shouldUpdateEpicStatusCorrectly() {
         subtask1.setStatus(Status.NEW);
         subtask2.setStatus(Status.NEW);
@@ -35,47 +27,4 @@ class EpicTest {
         epic.updateStatus(subtasks);
         assertEquals(Status.NEW, epic.getStatus());
     }
-<<<<<<< HEAD
-=======
-
-    @Test
-    @DisplayName("Статус эпика без подзадач")
-    void shouldHaveNewStatusWithNoSubtasks() {
-        assertEquals(Status.NEW, epic.getStatus());
-    }
-
-    @Test
-    @DisplayName("Статус эпика с новыми подзадачами")
-    void shouldHaveNewStatusWhenAllSubtasksNew() {
-        List<Subtask> subtasks = new ArrayList<>();
-        subtasks.add(subtask1);
-        subtasks.add(subtask2);
-        epic.updateStatus(subtasks);
-        assertEquals(Status.NEW, epic.getStatus());
-    }
-
-    @Test
-    @DisplayName("Статус эпика с выполненными подзадачами")
-    void shouldHaveDoneStatusWhenAllSubtasksDone() {
-        subtask1.setStatus(Status.DONE);
-        subtask2.setStatus(Status.DONE);
-        List<Subtask> subtasks = new ArrayList<>();
-        subtasks.add(subtask1);
-        subtasks.add(subtask2);
-        epic.updateStatus(subtasks);
-        assertEquals(Status.DONE, epic.getStatus());
-    }
-
-    @Test
-    @DisplayName("Статус эпика с разными статусами подзадач")
-    void shouldHaveInProgressStatusForMixedSubtasks() {
-        subtask1.setStatus(Status.NEW);
-        subtask2.setStatus(Status.DONE);
-        List<Subtask> subtasks = new ArrayList<>();
-        subtasks.add(subtask1);
-        subtasks.add(subtask2);
-        epic.updateStatus(subtasks);
-        assertEquals(Status.IN_PROGRESS, epic.getStatus());
-    }
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
 }

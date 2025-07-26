@@ -1,32 +1,20 @@
 package ru.yandex.javacourse.service;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.yandex.javacourse.model.Task;
-import java.util.ArrayList;
-<<<<<<< HEAD
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Тестирование InMemoryHistoryManager")
-class InMemoryHistoryManagerTest {
-    private ru.yandex.javacourse.service.HistoryManager historyManager;
-=======
-import java.util.Arrays;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     private HistoryManager historyManager;
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     private Task task1, task2, task3;
 
     @BeforeEach
     void setUp() {
-<<<<<<< HEAD
-        historyManager = new ru.yandex.javacourse.service.InMemoryHistoryManager();
-=======
         historyManager = new InMemoryHistoryManager();
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         task1 = new Task("Task 1", "Description 1");
         task1.setId(1);
         task2 = new Task("Task 2", "Description 2");
@@ -36,91 +24,40 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    @DisplayName("Добавление задачи в историю")
     void shouldAddTaskToHistory() {
         historyManager.add(task1);
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
-        assertHistoryEquals(expected);
+        List<Task> expected = List.of(task1);
+        assertIterableEquals(expected, historyManager.getHistory());
     }
 
     @Test
-    @DisplayName("Дубликат задачи перемещается в конец")
     void shouldMoveDuplicateToEnd() {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-        List<Task> expected = new ArrayList<>();
-        expected.add(task2);
-        expected.add(task1);
-        assertHistoryEquals(expected);
+        List<Task> expected = List.of(task2, task1);
+        assertIterableEquals(expected, historyManager.getHistory());
     }
 
     @Test
-    @DisplayName("Удаление задачи из истории")
     void shouldRemoveTaskFromHistory() {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.remove(task1.getId());
-        List<Task> expected = new ArrayList<>();
-        expected.add(task2);
-        assertHistoryEquals(expected);
+        List<Task> expected = List.of(task2);
+        assertIterableEquals(expected, historyManager.getHistory());
     }
 
     @Test
-    @DisplayName("Новая история должна быть пустой")
     void newManagerShouldHaveEmptyHistory() {
         assertTrue(historyManager.getHistory().isEmpty());
     }
 
     @Test
-    @DisplayName("Удаление несуществующей задачи")
     void shouldIgnoreNonExistentTaskRemoval() {
         historyManager.add(task1);
         historyManager.remove(999);
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
-        assertHistoryEquals(expected);
-    }
-
-<<<<<<< HEAD
-=======
-    @Test
-    @DisplayName("Удаление задачи из середины истории")
-    void shouldRemoveTaskFromMiddle() {
-        historyManager.add(task1);
-        historyManager.add(task2);
-        historyManager.add(task3);
-
-        historyManager.remove(task2.getId());
-
-        List<Task> expected = Arrays.asList(task1, task3); // Заменено List.of на Arrays.asList
-        assertHistoryEquals(expected);
-    }
-
-    @Test
-    @DisplayName("История не должна содержать дубликатов")
-    void shouldNotContainDuplicates() {
-        historyManager.add(task1);
-        historyManager.add(task2);
-        historyManager.add(task1);
-        historyManager.add(task3);
-        historyManager.add(task2);
-
-        List<Task> expected = Arrays.asList(task1, task3, task2); // Заменено List.of на Arrays.asList
-        assertHistoryEquals(expected);
-    }
-
-    @Test
-    @DisplayName("Удаление из пустой истории")
-    void shouldHandleEmptyHistoryRemoval() {
-        historyManager.remove(1);
-        assertTrue(historyManager.getHistory().isEmpty());
-    }
-
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
-    private void assertHistoryEquals(List<Task> expected) {
-        List<Task> actual = historyManager.getHistory();
-        assertEquals(expected, actual, "История не соответствует ожидаемой");
+        List<Task> expected = List.of(task1);
+        assertIterableEquals(expected, historyManager.getHistory());
     }
 }
