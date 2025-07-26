@@ -3,23 +3,32 @@ package ru.yandex.javacourse.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Epic extends Task
-{
+public class Epic extends Task {
     private final List<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String name, String description)
-    {
+    public Epic(String name, String description) {
         super(name, description);
     }
 
-    public List<Integer> getSubtaskIds()
-    {
+    public List<Integer> getSubtaskIds() {
         return new ArrayList<>(subtaskIds);
+    }
+
+    public void addSubtaskId(int subtaskId) {
+        subtaskIds.add(subtaskId);
+    }
+
+    public void removeSubtaskId(int subtaskId) {
+        subtaskIds.remove((Integer) subtaskId);
+    }
+
+    public void clearSubtaskIds() {
+        subtaskIds.clear();
     }
 
     public void updateStatus(List<Subtask> subtasks) {
         if (subtasks.isEmpty()) {
-            this.status = Status.NEW;
+            setStatus(Status.NEW);
             return;
         }
 
@@ -36,38 +45,22 @@ public class Epic extends Task
         }
 
         if (allNew) {
-            this.status = Status.NEW;
+            setStatus(Status.NEW);
         } else if (allDone) {
-            this.status = Status.DONE;
+            setStatus(Status.DONE);
         } else {
-            this.status = Status.IN_PROGRESS;
+            setStatus(Status.IN_PROGRESS);
         }
     }
 
-    public void addSubtaskId(int subtaskId)
-    {
-        subtaskIds.add(subtaskId);
-    }
-
-    public void removeSubtaskId(int subtaskId)
-    {
-        subtaskIds.remove((Integer) subtaskId);
-    }
-
-    public void clearSubtaskIds()
-    {
-        subtaskIds.clear();
-    }
-
     @Override
-    public String toString()
-    {
-        return "Epic{"
-                + "name='" + getName() + '\''
-                + ", description='" + getDescription() + '\''
-                + ", id=" + getId()
-                + ", status=" + getStatus()
-                + ", subtaskIds=" + subtaskIds
-                + '}';
+    public String toString() {
+        return "Epic{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
+                ", status=" + getStatus() +
+                ", subtaskIds=" + subtaskIds +
+                '}';
     }
 }

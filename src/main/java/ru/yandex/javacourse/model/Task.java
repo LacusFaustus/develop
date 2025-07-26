@@ -3,10 +3,10 @@ package ru.yandex.javacourse.model;
 import java.util.Objects;
 
 public class Task {
-    protected int id;
-    protected Status status;
     private String name;
     private String description;
+    private int id;
+    private Status status;
 
     public Task(String name, String description) {
         this.name = name;
