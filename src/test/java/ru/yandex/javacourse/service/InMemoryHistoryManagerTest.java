@@ -37,7 +37,10 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-        List<Task> expected = new ArrayList<>(Arrays.asList(task2, task1));
+
+        List<Task> expected = new ArrayList<>();
+        expected.add(task2);
+        expected.add(task1);
         assertHistoryEquals(expected);
     }
 
@@ -47,7 +50,9 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.remove(task1.getId());
-        List<Task> expected = new ArrayList<>(Arrays.asList(task2));
+
+        List<Task> expected = new ArrayList<>();
+        expected.add(task2);
         assertHistoryEquals(expected);
     }
 
@@ -62,7 +67,9 @@ class InMemoryHistoryManagerTest {
     void shouldIgnoreNonExistentTaskRemoval() {
         historyManager.add(task1);
         historyManager.remove(999);
-        List<Task> expected = new ArrayList<>(Arrays.asList(task1));
+
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
         assertHistoryEquals(expected);
     }
 
@@ -72,10 +79,11 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
-
         historyManager.remove(task2.getId());
 
-        List<Task> expected = new ArrayList<>(Arrays.asList(task1, task3));
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
+        expected.add(task3);
         assertHistoryEquals(expected);
     }
 
@@ -88,7 +96,10 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task3);
         historyManager.add(task2);
 
-        List<Task> expected = new ArrayList<>(Arrays.asList(task1, task3, task2));
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
+        expected.add(task3);
+        expected.add(task2);
         assertHistoryEquals(expected);
     }
 
@@ -101,10 +112,6 @@ class InMemoryHistoryManagerTest {
 
     private void assertHistoryEquals(List<Task> expected) {
         List<Task> actual = historyManager.getHistory();
-        assertEquals(expected.size(), actual.size(), "Размер истории не совпадает");
-        for (int i = 0; i < expected.size(); i++) {
-            assertEquals(expected.get(i), actual.get(i),
-                    "Элемент истории на позиции " + i + " не совпадает");
-        }
+        assertEquals(expected, actual, "История не соответствует ожидаемой");
     }
 }
