@@ -3,6 +3,7 @@ package ru.yandex.javacourse.service;
 import org.junit.jupiter.api.*;
 import ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,9 +37,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-        List<Task> expected = new ArrayList<>();
-        expected.add(task2);
-        expected.add(task1);
+        List<Task> expected = Arrays.asList(task2, task1);
         assertHistoryEquals(expected);
     }
 
@@ -48,8 +47,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.remove(task1.getId());
-        List<Task> expected = new ArrayList<>();
-        expected.add(task2);
+        List<Task> expected = Arrays.asList(task2);
         assertHistoryEquals(expected);
     }
 
@@ -64,8 +62,7 @@ class InMemoryHistoryManagerTest {
     void shouldIgnoreNonExistentTaskRemoval() {
         historyManager.add(task1);
         historyManager.remove(999);
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
+        List<Task> expected = Arrays.asList(task1);
         assertHistoryEquals(expected);
     }
 
@@ -78,7 +75,7 @@ class InMemoryHistoryManagerTest {
 
         historyManager.remove(task2.getId());
 
-        List<Task> expected = List.of(task1, task3);
+        List<Task> expected = Arrays.asList(task1, task3);
         assertHistoryEquals(expected);
     }
 
@@ -91,7 +88,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task3);
         historyManager.add(task2);
 
-        List<Task> expected = List.of(task1, task3, task2);
+        List<Task> expected = Arrays.asList(task1, task3, task2);
         assertHistoryEquals(expected);
     }
 
@@ -102,9 +99,24 @@ class InMemoryHistoryManagerTest {
         assertTrue(historyManager.getHistory().isEmpty());
     }
 
+    @Test
+    @DisplayName("Очистка всей истории")
+    void shouldClearHistory() {
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.clear();
+
+        assertTrue(historyManager.getHistory().isEmpty());
+    }
 
     private void assertHistoryEquals(List<Task> expected) {
         List<Task> actual = historyManager.getHistory();
-        assertEquals(expected, actual, "История не соответствует ожидаемой");
+        assertEquals(expected.size(), actual.size(), "Размер истории не совпадает");
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), actual.get(i),
+                    "Элемент истории на позиции " + i + " не совпадает");
+        }
     }
 }
