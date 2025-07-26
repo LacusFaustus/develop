@@ -108,7 +108,8 @@ class InMemoryHistoryManagerTest {
 
         historyManager.clear();
 
-        assertTrue(historyManager.getHistory().isEmpty());
+        assertTrue(historyManager.getHistory().isEmpty(), "История должна быть пустой после очистки");
+        assertEquals(0, historyManager.getHistory().size(), "Размер истории должен быть 0 после очистки");
     }
 
     private void assertHistoryEquals(List<Task> expected) {
