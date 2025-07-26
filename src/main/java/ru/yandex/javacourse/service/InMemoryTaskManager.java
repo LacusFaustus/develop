@@ -2,10 +2,10 @@ package ru.yandex.javacourse.service;
 
 import ru.yandex.javacourse.model.*;
 import ru.yandex.javacourse.util.Managers;
+
 import java.util.*;
-import java.util.Collections;
-import java.util.Objects;
 import java.util.stream.Collectors;
+import static java.util.Objects.requireNonNull;
 
 public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks = new HashMap<>();
@@ -14,7 +14,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int idCounter = 0;
 
-    // Методы для Task
     @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
@@ -25,22 +24,23 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
-            return new Task(task.getId(), task.getName(),
-                    task.getDescription(), task.getStatus());
+            return new Task(task.getId(), task.getName(), task.getDescription(), task.getStatus());
         }
         return null;
     }
 
     @Override
-    public int createTask(Task task) {
+    public synchronized int createTask(Task task) {
+        requireNonNull(task, "Task cannot be null");
         int newId = ++idCounter;
-        Task newTask = new Task(newId, task.getName(), task.getDescription(), Status.NEW);
+        Task newTask = new Task(newId, task.getName(), task.getDescription(), task.getStatus());
         tasks.put(newId, newTask);
         return newId;
     }
 
     @Override
     public void updateTask(Task updatedTask) {
+        requireNonNull(updatedTask, "Task cannot be null");
         if (tasks.containsKey(updatedTask.getId())) {
             tasks.put(updatedTask.getId(), updatedTask);
         }
@@ -58,7 +58,6 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.clear();
     }
 
-    // Методы для Epic
     @Override
     public List<Epic> getAllEpics() {
         return new ArrayList<>(epics.values());
@@ -79,7 +78,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int createEpic(Epic epic) {
+    public synchronized int createEpic(Epic epic) {
+        requireNonNull(epic, "Epic cannot be null");
         int newId = ++idCounter;
         Epic newEpic = new Epic(epic.getName(), epic.getDescription());
         newEpic.setId(newId);
@@ -89,6 +89,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic updatedEpic) {
+        requireNonNull(updatedEpic, "Epic cannot be null");
         Epic existingEpic = epics.get(updatedEpic.getId());
         if (existingEpic != null) {
             existingEpic.setName(updatedEpic.getName());
@@ -116,7 +117,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.clear();
     }
 
-    // Методы для Subtask
     @Override
     public List<Subtask> getAllSubtasks() {
         return new ArrayList<>(subtasks.values());
@@ -135,7 +135,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int createSubtask(Subtask subtask) {
+    public synchronized int createSubtask(Subtask subtask) {
+        requireNonNull(subtask, "Subtask cannot be null");
         if (!epics.containsKey(subtask.getEpicId())) {
             return -1;
         }
@@ -144,7 +145,7 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask newSubtask = new Subtask(newId,
                 subtask.getName(),
                 subtask.getDescription(),
-                Status.NEW,
+                subtask.getStatus(),
                 subtask.getEpicId());
         subtasks.put(newId, newSubtask);
 
@@ -157,6 +158,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(Subtask updatedSubtask) {
+        requireNonNull(updatedSubtask, "Subtask cannot be null");
         if (subtasks.containsKey(updatedSubtask.getId())) {
             subtasks.put(updatedSubtask.getId(), updatedSubtask);
             updateEpicStatus(updatedSubtask.getEpicId());
@@ -206,11 +208,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
-        if (epic == null) {
-            return;
+        if (epic != null) {
+            List<Subtask> epicSubtasks = getSubtasksByEpicId(epicId);
+            epic.updateStatus(epicSubtasks);
         }
-
-        List<Subtask> epicSubtasks = getSubtasksByEpicId(epicId);
-        epic.updateStatus(epicSubtasks);
     }
 }
