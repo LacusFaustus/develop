@@ -13,9 +13,9 @@ public class Main {
         Task task1 = new Task("Задача 1", "Описание 1");
         Task task2 = new Task("Задача 2", "Описание 2");
         Epic epic1 = new Epic("Эпик 1", "Описание эпика 1");
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание 1", epic1.getId());
-        Subtask subtask2 = new Subtask("Подзадача 2", "Описание 2", epic1.getId());
-        Subtask subtask3 = new Subtask("Подзадача 3", "Описание 3", epic1.getId());
+        Subtask subtask1 = new Subtask(3, "Подзадача 1", "Описание 1", Status.NEW, epic1.getId());
+        Subtask subtask2 = new Subtask(4, "Подзадача 2", "Описание 2", Status.NEW, epic1.getId());
+        Subtask subtask3 = new Subtask(5, "Подзадача 3", "Описание 3", Status.NEW, epic1.getId());
         Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
 
         // Создаем в менеджере
