@@ -3,6 +3,8 @@ package ru.yandex.javacourse.service;
 import ru.yandex.javacourse.model.*;
 import ru.yandex.javacourse.util.Managers;
 import java.util.*;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {

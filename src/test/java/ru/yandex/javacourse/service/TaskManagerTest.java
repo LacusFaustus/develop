@@ -7,12 +7,12 @@ import ru.yandex.javacourse.model.Task;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskManagerTest {
-    private ru.yandex.javacourse.service.TaskManager manager;
+    private TaskManager manager;
     private Task task;
 
     @BeforeEach
     void setUp() {
-        manager = new ru.yandex.javacourse.service.InMemoryTaskManager();
+        manager = new InMemoryTaskManager();
         task = new Task("Original", "Description");
     }
 
