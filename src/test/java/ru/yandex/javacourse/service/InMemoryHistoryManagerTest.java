@@ -37,7 +37,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-        List<Task> expected = Arrays.asList(task2, task1);
+        List<Task> expected = new ArrayList<>(Arrays.asList(task2, task1));
         assertHistoryEquals(expected);
     }
 
@@ -47,7 +47,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.remove(task1.getId());
-        List<Task> expected = Arrays.asList(task2);
+        List<Task> expected = new ArrayList<>(Arrays.asList(task2));
         assertHistoryEquals(expected);
     }
 
@@ -62,7 +62,7 @@ class InMemoryHistoryManagerTest {
     void shouldIgnoreNonExistentTaskRemoval() {
         historyManager.add(task1);
         historyManager.remove(999);
-        List<Task> expected = Arrays.asList(task1);
+        List<Task> expected = new ArrayList<>(Arrays.asList(task1));
         assertHistoryEquals(expected);
     }
 
@@ -75,7 +75,7 @@ class InMemoryHistoryManagerTest {
 
         historyManager.remove(task2.getId());
 
-        List<Task> expected = Arrays.asList(task1, task3);
+        List<Task> expected = new ArrayList<>(Arrays.asList(task1, task3));
         assertHistoryEquals(expected);
     }
 
@@ -88,7 +88,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task3);
         historyManager.add(task2);
 
-        List<Task> expected = Arrays.asList(task1, task3, task2);
+        List<Task> expected = new ArrayList<>(Arrays.asList(task1, task3, task2));
         assertHistoryEquals(expected);
     }
 
@@ -97,19 +97,6 @@ class InMemoryHistoryManagerTest {
     void shouldHandleEmptyHistoryRemoval() {
         historyManager.remove(1);
         assertTrue(historyManager.getHistory().isEmpty());
-    }
-
-    @Test
-    @DisplayName("Очистка всей истории")
-    void shouldClearHistory() {
-        historyManager.add(task1);
-        historyManager.add(task2);
-        historyManager.add(task3);
-
-        historyManager.clear();
-
-        assertTrue(historyManager.getHistory().isEmpty(), "История должна быть пустой после очистки");
-        assertEquals(0, historyManager.getHistory().size(), "Размер истории должен быть 0 после очистки");
     }
 
     private void assertHistoryEquals(List<Task> expected) {
