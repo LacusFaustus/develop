@@ -66,7 +66,12 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task3);
         historyManager.remove(task2.getId());
 
-        assertEquals(Arrays.asList(task1, task3), historyManager.getHistory());
+        // Явное создание списка без Arrays.asList()
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
+        expected.add(task3);
+
+        assertHistoryEquals(expected);
     }
 
     @Test
