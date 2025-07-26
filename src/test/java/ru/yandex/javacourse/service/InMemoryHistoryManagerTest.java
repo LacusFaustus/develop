@@ -3,7 +3,6 @@ package ru.yandex.javacourse.service;
 import org.junit.jupiter.api.*;
 import ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,13 +21,19 @@ class InMemoryHistoryManagerTest {
         task3.setId(3);
     }
 
+    private List<Task> createTaskList(Task... tasks) {
+        List<Task> list = new ArrayList<>();
+        for (Task task : tasks) {
+            list.add(task);
+        }
+        return list;
+    }
+
     @Test
     @DisplayName("Добавление задачи в историю")
     void shouldAddTaskToHistory() {
         historyManager.add(task1);
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
-        assertHistoryEquals(expected);
+        assertHistoryEquals(createTaskList(task1));
     }
 
     @Test
@@ -37,11 +42,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-
-        List<Task> expected = new ArrayList<>();
-        expected.add(task2);
-        expected.add(task1);
-        assertHistoryEquals(expected);
+        assertHistoryEquals(createTaskList(task2, task1));
     }
 
     @Test
@@ -50,10 +51,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.remove(task1.getId());
-
-        List<Task> expected = new ArrayList<>();
-        expected.add(task2);
-        assertHistoryEquals(expected);
+        assertHistoryEquals(createTaskList(task2));
     }
 
     @Test
@@ -67,10 +65,7 @@ class InMemoryHistoryManagerTest {
     void shouldIgnoreNonExistentTaskRemoval() {
         historyManager.add(task1);
         historyManager.remove(999);
-
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
-        assertHistoryEquals(expected);
+        assertHistoryEquals(createTaskList(task1));
     }
 
     @Test
@@ -80,11 +75,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task2);
         historyManager.add(task3);
         historyManager.remove(task2.getId());
-
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
-        expected.add(task3);
-        assertHistoryEquals(expected);
+        assertEquals(List.of(task1, task3), historyManager.getHistory());
     }
 
     @Test
@@ -95,12 +86,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task3);
         historyManager.add(task2);
-
-        List<Task> expected = new ArrayList<>();
-        expected.add(task1);
-        expected.add(task3);
-        expected.add(task2);
-        assertHistoryEquals(expected);
+        assertEquals(List.of(task1, task3, task2), historyManager.getHistory());
     }
 
     @Test
