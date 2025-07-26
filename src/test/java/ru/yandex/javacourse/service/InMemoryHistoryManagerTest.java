@@ -59,6 +59,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task2);
         historyManager.add(task3);
         historyManager.remove(task2.getId());
+
         assertEquals(Arrays.asList(task1, task3), historyManager.getHistory());
     }
 
@@ -70,6 +71,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task3);
         historyManager.add(task2);
+
         assertEquals(Arrays.asList(task1, task3, task2), historyManager.getHistory());
     }
 }
