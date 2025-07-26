@@ -1,34 +1,52 @@
-package main.java.ru.yandex.javacourse;
+package ru.yandex.javacourse;
 
-import main.java.ru.yandex.javacourse.model.*;
-import main.java.ru.yandex.javacourse.service.TaskManager;
-import main.java.ru.yandex.javacourse.util.Managers;
+import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.service.TaskManager;
+import ru.yandex.javacourse.util.Managers;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefault();
 
-        // Создаем задачи
-        Task task = new Task("Помыть посуду", "Помыть всю посуду на кухне");
-        int taskId = manager.createTask(task);
+        // 1. Создаем задачи
+        Task task1 = new Task("Задача 1", "Описание 1");
+        Task task2 = new Task("Задача 2", "Описание 2");
+        Epic epic1 = new Epic("Эпик 1", "Описание эпика 1");
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание 1", epic1.getId());
+        Subtask subtask2 = new Subtask("Подзадача 2", "Описание 2", epic1.getId());
+        Subtask subtask3 = new Subtask("Подзадача 3", "Описание 3", epic1.getId());
+        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
 
-        // Создаем эпик
-        Epic epic = new Epic("Переезд", "Организация переезда в другой город");
-        int epicId = manager.createEpic(epic);
+        // Создаем в менеджере
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
+        taskManager.createEpic(epic1);
+        taskManager.createSubtask(subtask1);
+        taskManager.createSubtask(subtask2);
+        taskManager.createSubtask(subtask3);
+        taskManager.createEpic(epic2);
 
-        // Создаем подзадачи
-        Subtask subtask1 = new Subtask("Собрать коробки", "Купить и собрать коробки", epicId);
-        int subtask1Id = manager.createSubtask(subtask1);
+        // 2. Запрашиваем задачи в разном порядке
+        taskManager.getTaskById(task1.getId());
+        taskManager.getEpicById(epic1.getId());
+        taskManager.getSubtaskById(subtask1.getId());
+        taskManager.getTaskById(task2.getId());
+        taskManager.getSubtaskById(subtask1.getId()); // Дубликат
+        taskManager.getEpicById(epic1.getId()); // Дубликат
 
-        Subtask subtask2 = new Subtask("Упаковать вещи", "Аккуратно упаковать все вещи", epicId);
-        int subtask2Id = manager.createSubtask(subtask2);
+        // 3. Проверяем историю
+        System.out.println("История после запросов:");
+        taskManager.getHistory().forEach(System.out::println);
 
-        // Выводим информацию
-        System.out.println("Все задачи: " + manager.getAllTasks());
-        System.out.println("Все эпики: " + manager.getAllEpics());
-        System.out.println("Все подзадачи: " + manager.getAllSubtasks());
-        System.out.println("Подзадачи эпика: " + manager.getSubtasksByEpicId(epicId));
-        System.out.println("История: " + manager.getHistory());
+        // 4. Удаляем задачу из истории
+        taskManager.deleteTaskById(task1.getId());
+        System.out.println("\nИстория после удаления задачи 1:");
+        taskManager.getHistory().forEach(System.out::println);
+
+        // 5. Удаляем эпик с подзадачами
+        taskManager.deleteEpicById(epic1.getId());
+        System.out.println("\nИстория после удаления эпика 1:");
+        taskManager.getHistory().forEach(System.out::println);
     }
 }

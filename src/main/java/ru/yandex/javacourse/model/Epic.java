@@ -1,4 +1,4 @@
-package main.java.ru.yandex.javacourse.model;
+package ru.yandex.javacourse.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class Epic extends Task
 
     public void updateStatus(List<Subtask> subtasks) {
         if (subtasks.isEmpty()) {
-            setStatus(Status.NEW);
+            this.status = Status.NEW;
             return;
         }
 
@@ -36,11 +36,11 @@ public class Epic extends Task
         }
 
         if (allNew) {
-            setStatus(Status.NEW);
+            this.status = Status.NEW;
         } else if (allDone) {
-            setStatus(Status.DONE);
+            this.status = Status.DONE;
         } else {
-            setStatus(Status.IN_PROGRESS);
+            this.status = Status.IN_PROGRESS;
         }
     }
 

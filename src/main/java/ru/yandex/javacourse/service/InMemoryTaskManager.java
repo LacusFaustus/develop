@@ -1,7 +1,7 @@
-package main.java.ru.yandex.javacourse.service;
+package ru.yandex.javacourse.service;
 
-import main.java.ru.yandex.javacourse.model.*;
-import main.java.ru.yandex.javacourse.util.Managers;
+import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.util.Managers;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,8 +23,10 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
+            return new Task(task.getId(), task.getName(),
+                    task.getDescription(), task.getStatus());
         }
-        return task;
+        return null;
     }
 
     @Override
@@ -65,8 +67,13 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         if (epic != null) {
             historyManager.add(epic);
+            Epic copy = new Epic(epic.getName(), epic.getDescription());
+            copy.setId(epic.getId());
+            copy.setStatus(epic.getStatus());
+            copy.getSubtaskIds().addAll(epic.getSubtaskIds());
+            return copy;
         }
-        return epic;
+        return null;
     }
 
     @Override
@@ -118,8 +125,11 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtasks.get(id);
         if (subtask != null) {
             historyManager.add(subtask);
+            return new Subtask(subtask.getId(), subtask.getName(),
+                    subtask.getDescription(), subtask.getStatus(),
+                    subtask.getEpicId());
         }
-        return subtask;
+        return null;
     }
 
     @Override
@@ -127,6 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (!epics.containsKey(subtask.getEpicId())) {
             return -1;
         }
+
         int newId = ++idCounter;
         Subtask newSubtask = new Subtask(newId,
                 subtask.getName(),
@@ -134,9 +145,11 @@ public class InMemoryTaskManager implements TaskManager {
                 Status.NEW,
                 subtask.getEpicId());
         subtasks.put(newId, newSubtask);
+
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtaskId(newId);
         updateEpicStatus(epic.getId());
+
         return newId;
     }
 

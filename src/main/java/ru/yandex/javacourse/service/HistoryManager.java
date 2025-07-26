@@ -1,6 +1,6 @@
-package main.java.ru.yandex.javacourse.service;
+package ru.yandex.javacourse.service;
 
-import main.java.ru.yandex.javacourse.model.Task;
+import ru.yandex.javacourse.model.Task;
 import java.util.List;
 
 public interface HistoryManager {

@@ -1,4 +1,4 @@
-package main.java.ru.yandex.javacourse.model;
+package ru.yandex.javacourse.model;
 
 public class Subtask extends Task
 {

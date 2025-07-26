@@ -1,6 +1,6 @@
-package main.java.ru.yandex.javacourse.model;
+package ru.yandex.javacourse.model;
 
-import main.java.ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.model.*;
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.List;

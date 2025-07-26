@@ -1,9 +1,9 @@
-package main.java.ru.yandex.javacourse.service;
+package ru.yandex.javacourse.service;
 
 import java.util.List;
-import main.java.ru.yandex.javacourse.model.Epic;
-import main.java.ru.yandex.javacourse.model.Subtask;
-import main.java.ru.yandex.javacourse.model.Task;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
 
 public interface TaskManager
 {
