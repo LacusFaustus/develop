@@ -2,9 +2,17 @@ package ru.yandex.javacourse.service;
 
 import ru.yandex.javacourse.model.*;
 import ru.yandex.javacourse.util.Managers;
+<<<<<<< HEAD
 
 import java.util.*;
 import java.util.stream.Collectors;
+=======
+import java.util.*;
+import java.util.stream.Collectors;
+import static java.util.Objects.requireNonNull;
+import java.util.Collections;
+import java.util.Objects;
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
 
 public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks = new HashMap<>();
@@ -15,9 +23,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getAllTasks() {
+<<<<<<< HEAD
         return tasks.values().stream()
                 .map(this::copyTask)
                 .collect(Collectors.toList());
+=======
+        return new ArrayList<>(tasks.values());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     @Override
@@ -25,26 +37,45 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
+<<<<<<< HEAD
             return copyTask(task);
+=======
+            return new Task(task.getId(), task.getName(), task.getDescription(), task.getStatus());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         }
         return null;
     }
 
     @Override
+<<<<<<< HEAD
     public int createTask(Task task) {
         Objects.requireNonNull(task, "Task cannot be null");
         task.setId(++idCounter);
         tasks.put(task.getId(), copyTask(task));
         return task.getId();
+=======
+    public synchronized int createTask(Task task) {
+        requireNonNull(task, "Task cannot be null");
+        int newId = ++idCounter;
+        Task newTask = new Task(newId, task.getName(), task.getDescription(), task.getStatus());
+        tasks.put(newId, newTask);
+        return newId;
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     @Override
     public void updateTask(Task updatedTask) {
+<<<<<<< HEAD
         if (updatedTask != null && tasks.containsKey(updatedTask.getId())) {
             Task task = tasks.get(updatedTask.getId());
             task.setName(updatedTask.getName());
             task.setDescription(updatedTask.getDescription());
             task.setStatus(updatedTask.getStatus());
+=======
+        requireNonNull(updatedTask, "Task cannot be null");
+        if (tasks.containsKey(updatedTask.getId())) {
+            tasks.put(updatedTask.getId(), updatedTask);
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         }
     }
 
@@ -62,9 +93,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Epic> getAllEpics() {
+<<<<<<< HEAD
         return epics.values().stream()
                 .map(this::copyEpic)
                 .collect(Collectors.toList());
+=======
+        return new ArrayList<>(epics.values());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     @Override
@@ -72,25 +107,51 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         if (epic != null) {
             historyManager.add(epic);
+<<<<<<< HEAD
             return copyEpic(epic);
+=======
+            Epic copy = new Epic(epic.getName(), epic.getDescription());
+            copy.setId(epic.getId());
+            copy.setStatus(epic.getStatus());
+            copy.getSubtaskIds().addAll(epic.getSubtaskIds());
+            return copy;
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         }
         return null;
     }
 
     @Override
+<<<<<<< HEAD
     public int createEpic(Epic epic) {
         Objects.requireNonNull(epic, "Epic cannot be null");
         epic.setId(++idCounter);
         epics.put(epic.getId(), copyEpic(epic));
         return epic.getId();
+=======
+    public synchronized int createEpic(Epic epic) {
+        requireNonNull(epic, "Epic cannot be null");
+        int newId = ++idCounter;
+        Epic newEpic = new Epic(epic.getName(), epic.getDescription());
+        newEpic.setId(newId);
+        epics.put(newId, newEpic);
+        return newId;
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     @Override
     public void updateEpic(Epic updatedEpic) {
+<<<<<<< HEAD
         if (updatedEpic != null && epics.containsKey(updatedEpic.getId())) {
             Epic epic = epics.get(updatedEpic.getId());
             epic.setName(updatedEpic.getName());
             epic.setDescription(updatedEpic.getDescription());
+=======
+        requireNonNull(updatedEpic, "Epic cannot be null");
+        Epic existingEpic = epics.get(updatedEpic.getId());
+        if (existingEpic != null) {
+            existingEpic.setName(updatedEpic.getName());
+            existingEpic.setDescription(updatedEpic.getDescription());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         }
     }
 
@@ -116,9 +177,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Subtask> getAllSubtasks() {
+<<<<<<< HEAD
         return subtasks.values().stream()
                 .map(this::copySubtask)
                 .collect(Collectors.toList());
+=======
+        return new ArrayList<>(subtasks.values());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     @Override
@@ -126,12 +191,19 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtasks.get(id);
         if (subtask != null) {
             historyManager.add(subtask);
+<<<<<<< HEAD
             return copySubtask(subtask);
+=======
+            return new Subtask(subtask.getId(), subtask.getName(),
+                    subtask.getDescription(), subtask.getStatus(),
+                    subtask.getEpicId());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         }
         return null;
     }
 
     @Override
+<<<<<<< HEAD
     public int createSubtask(Subtask subtask) {
         Objects.requireNonNull(subtask, "Subtask cannot be null");
         if (!epics.containsKey(subtask.getEpicId())) {
@@ -146,16 +218,44 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicStatus(epic.getId());
 
         return subtask.getId();
+=======
+    public synchronized int createSubtask(Subtask subtask) {
+        requireNonNull(subtask, "Subtask cannot be null");
+        if (!epics.containsKey(subtask.getEpicId())) {
+            return -1;
+        }
+
+        int newId = ++idCounter;
+        Subtask newSubtask = new Subtask(newId,
+                subtask.getName(),
+                subtask.getDescription(),
+                subtask.getStatus(),
+                subtask.getEpicId());
+        subtasks.put(newId, newSubtask);
+
+        Epic epic = epics.get(subtask.getEpicId());
+        epic.addSubtaskId(newId);
+        updateEpicStatus(epic.getId());
+
+        return newId;
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     @Override
     public void updateSubtask(Subtask updatedSubtask) {
+<<<<<<< HEAD
         if (updatedSubtask != null && subtasks.containsKey(updatedSubtask.getId())) {
             Subtask subtask = subtasks.get(updatedSubtask.getId());
             subtask.setName(updatedSubtask.getName());
             subtask.setDescription(updatedSubtask.getDescription());
             subtask.setStatus(updatedSubtask.getStatus());
             updateEpicStatus(subtask.getEpicId());
+=======
+        requireNonNull(updatedSubtask, "Subtask cannot be null");
+        if (subtasks.containsKey(updatedSubtask.getId())) {
+            subtasks.put(updatedSubtask.getId(), updatedSubtask);
+            updateEpicStatus(updatedSubtask.getEpicId());
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
         }
     }
 
@@ -192,12 +292,16 @@ public class InMemoryTaskManager implements TaskManager {
         return epic.getSubtaskIds().stream()
                 .map(subtasks::get)
                 .filter(Objects::nonNull)
+<<<<<<< HEAD
                 .map(this::copySubtask)
+=======
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Task> getHistory() {
+<<<<<<< HEAD
         return historyManager.getHistory().stream()
                 .map(task -> {
                     if (task instanceof Epic) {
@@ -209,10 +313,14 @@ public class InMemoryTaskManager implements TaskManager {
                     }
                 })
                 .collect(Collectors.toList());
+=======
+        return historyManager.getHistory();
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
+<<<<<<< HEAD
         if (epic == null) return;
 
         List<Subtask> epicSubtasks = getSubtasksByEpicId(epicId);
@@ -241,5 +349,11 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return new Subtask(original.getId(), original.getName(), original.getDescription(),
                 original.getStatus(), original.getEpicId());
+=======
+        if (epic != null) {
+            List<Subtask> epicSubtasks = getSubtasksByEpicId(epicId);
+            epic.updateStatus(epicSubtasks);
+        }
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
     }
 }

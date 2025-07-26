@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IDE files 
 .idea/ 
 *.iml 
@@ -8,3 +9,14 @@ target/
 bin/ 
 *.class 
 *.log 
+=======
+/target/
+/.idea/
+*.iml
+/lib/
+sources.txt
+"target/" 
+"src/main/resources/" 
+/.idea/ 
+/.idea/ 
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67

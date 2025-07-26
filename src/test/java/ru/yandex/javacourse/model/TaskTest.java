@@ -1,7 +1,14 @@
 package ru.yandex.javacourse.model;
 
+<<<<<<< HEAD
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+=======
+import ru.yandex.javacourse.model.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import ru.yandex.javacourse.model.Status;
+>>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
 
 class TaskTest {
     private Task task;
