@@ -7,7 +7,7 @@ import ru.yandex.javacourse.model.Task;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskManagerTest {
-    private TaskManager manager;
+    private ru.yandex.javacourse.service.TaskManager manager;
     private Task task;
 
     @BeforeEach
