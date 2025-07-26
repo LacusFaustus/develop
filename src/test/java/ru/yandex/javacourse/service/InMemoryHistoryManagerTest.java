@@ -31,7 +31,9 @@ class InMemoryHistoryManagerTest {
     @DisplayName("Добавление задачи в историю")
     void shouldAddTaskToHistory() {
         historyManager.add(task1);
-        assertEquals(Collections.singletonList(task1), historyManager.getHistory());
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
+        assertHistoryEquals(expected);
     }
 
     @Test
@@ -40,7 +42,11 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
-        assertEquals(Arrays.asList(task2, task1), historyManager.getHistory());
+
+        List<Task> expected = new ArrayList<>();
+        expected.add(task2);
+        expected.add(task1);
+        assertHistoryEquals(expected);
     }
 
     @Test
@@ -73,5 +79,12 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task2);
 
         assertEquals(Arrays.asList(task1, task3, task2), historyManager.getHistory());
+    }
+    private void assertHistoryEquals(List<Task> expected) {
+        List<Task> actual = historyManager.getHistory();
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), actual.get(i));
+        }
     }
 }
