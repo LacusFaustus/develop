@@ -3,22 +3,29 @@ package ru.yandex.javacourse.model;
 import java.util.Objects;
 
 public class Task {
-    private int id;
-    private String name;
-    private String description;
-    private Status status;
-
-    public Task(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.status = Status.NEW;
-    }
+    protected int id;
+    protected String name;
+    protected String description;
+    protected Status status;
+    protected TaskType type = TaskType.TASK;
 
     public Task(int id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(Task other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.description = other.description;
+        this.status = other.status;
+        this.type = other.type;
+    }
+
+    public Task(String name, String description) {
+        this(0, name, description, Status.NEW);
     }
 
     public int getId() {
@@ -53,29 +60,26 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d,%s,%s,%s,%s",
+                id, type, name, status, description);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id &&
-                Objects.equals(name, task.name) &&
-                Objects.equals(description, task.description) &&
-                status == task.status;
+        return id == task.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status);
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+        return Objects.hash(id);
     }
 }

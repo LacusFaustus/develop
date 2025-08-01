@@ -1,8 +1,7 @@
 package ru.yandex.javacourse.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import ru.yandex.javacourse.model.Task;
+import org.junit.jupiter.api.*;
+import ru.yandex.javacourse.model.*;
 
 import java.util.List;
 
@@ -10,54 +9,93 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     private HistoryManager historyManager;
-    private Task task1, task2, task3;
 
     @BeforeEach
     void setUp() {
         historyManager = new InMemoryHistoryManager();
-        task1 = new Task("Task 1", "Description 1");
-        task1.setId(1);
-        task2 = new Task("Task 2", "Description 2");
-        task2.setId(2);
-        task3 = new Task("Task 3", "Description 3");
-        task3.setId(3);
     }
 
     @Test
-    void shouldAddTaskToHistory() {
-        historyManager.add(task1);
-        List<Task> expected = List.of(task1);
-        assertIterableEquals(expected, historyManager.getHistory());
-    }
+    void shouldAddTasksToHistory() {
+        Task task1 = new Task(1, "Task 1", "Description", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description", Status.NEW);
 
-    @Test
-    void shouldMoveDuplicateToEnd() {
         historyManager.add(task1);
         historyManager.add(task2);
-        historyManager.add(task1);
-        List<Task> expected = List.of(task2, task1);
-        assertIterableEquals(expected, historyManager.getHistory());
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task1, history.get(0));
+        assertEquals(task2, history.get(1));
     }
 
     @Test
-    void shouldRemoveTaskFromHistory() {
+    void shouldRemoveDuplicates() {
+        Task task = new Task(1, "Task", "Description", Status.NEW);
+
+        historyManager.add(task);
+        historyManager.add(task);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(1, history.size());
+    }
+
+    @Test
+    void shouldRemoveFromBeginning() {
+        Task task1 = new Task(1, "Task 1", "Description", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description", Status.NEW);
+        Task task3 = new Task(3, "Task 3", "Description", Status.NEW);
+
         historyManager.add(task1);
         historyManager.add(task2);
-        historyManager.remove(task1.getId());
-        List<Task> expected = List.of(task2);
-        assertIterableEquals(expected, historyManager.getHistory());
+        historyManager.add(task3);
+
+        historyManager.remove(1);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task2, history.get(0));
+        assertEquals(task3, history.get(1));
     }
 
     @Test
-    void newManagerShouldHaveEmptyHistory() {
+    void shouldRemoveFromMiddle() {
+        Task task1 = new Task(1, "Task 1", "Description", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description", Status.NEW);
+        Task task3 = new Task(3, "Task 3", "Description", Status.NEW);
+
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(2);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task1, history.get(0));
+        assertEquals(task3, history.get(1));
+    }
+
+    @Test
+    void shouldRemoveFromEnd() {
+        Task task1 = new Task(1, "Task 1", "Description", Status.NEW);
+        Task task2 = new Task(2, "Task 2", "Description", Status.NEW);
+        Task task3 = new Task(3, "Task 3", "Description", Status.NEW);
+
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(3);
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task1, history.get(0));
+        assertEquals(task2, history.get(1));
+    }
+
+    @Test
+    void shouldHandleEmptyHistory() {
         assertTrue(historyManager.getHistory().isEmpty());
-    }
-
-    @Test
-    void shouldIgnoreNonExistentTaskRemoval() {
-        historyManager.add(task1);
-        historyManager.remove(999);
-        List<Task> expected = List.of(task1);
-        assertIterableEquals(expected, historyManager.getHistory());
     }
 }

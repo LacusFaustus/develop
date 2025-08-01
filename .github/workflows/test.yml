@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "sprint_7-feature" ]
+    branches: [ "sprint_7-solution-in-file-manager" ]
   pull_request:
-    branches: [ "sprint_7-feature" ]
+    branches: [ "main" ]
 
 jobs:
   build:

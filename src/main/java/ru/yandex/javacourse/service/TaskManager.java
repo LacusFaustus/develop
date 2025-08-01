@@ -1,29 +1,33 @@
 package ru.yandex.javacourse.service;
 
 import ru.yandex.javacourse.model.*;
+
 import java.util.List;
 
 public interface TaskManager {
     List<Task> getAllTasks();
-    Task getTaskById(int id);
-    int createTask(Task task);
-    void updateTask(Task updatedTask);
-    void deleteTaskById(int id);
-    void deleteAllTasks();
-
     List<Epic> getAllEpics();
-    Epic getEpicById(int id);
-    int createEpic(Epic epic);
-    void updateEpic(Epic updatedEpic);
-    void deleteEpicById(int id);
-    void deleteAllEpics();
-
     List<Subtask> getAllSubtasks();
-    Subtask getSubtaskById(int id);
-    int createSubtask(Subtask subtask);
-    void updateSubtask(Subtask updatedSubtask);
-    void deleteSubtaskById(int id);
+
+    void deleteAllTasks();
+    void deleteAllEpics();
     void deleteAllSubtasks();
+
+    Task getTaskById(int id);
+    Epic getEpicById(int id);
+    Subtask getSubtaskById(int id);
+
+    int createTask(Task task);
+    int createEpic(Epic epic);
+    int createSubtask(Subtask subtask);
+
+    void updateTask(Task updatedTask);
+    void updateEpic(Epic updatedEpic);
+    void updateSubtask(Subtask updatedSubtask);
+
+    void deleteTaskById(int id);
+    void deleteEpicById(int id);
+    void deleteSubtaskById(int id);
 
     List<Subtask> getSubtasksByEpicId(int epicId);
     List<Task> getHistory();

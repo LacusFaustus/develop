@@ -6,24 +6,32 @@ import java.util.List;
 public class Epic extends Task {
     private final List<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String name, String description) {
-        super(name, description);
-    }
-
     public Epic(int id, String name, String description, Status status) {
         super(id, name, description, status);
+        type = TaskType.EPIC;
+    }
+
+    public Epic(Epic other) {
+        super(other);
+        this.subtaskIds.addAll(other.subtaskIds);
+    }
+
+    public Epic(String name, String description) {
+        this(0, name, description, Status.NEW);
     }
 
     public List<Integer> getSubtaskIds() {
         return new ArrayList<>(subtaskIds);
     }
 
-    public void addSubtaskId(int subtaskId) {
-        subtaskIds.add(subtaskId);
+    public void addSubtaskId(int id) {
+        if (!subtaskIds.contains(id)) {
+            subtaskIds.add(id);
+        }
     }
 
-    public void removeSubtaskId(int subtaskId) {
-        subtaskIds.remove((Integer) subtaskId);
+    public void removeSubtaskId(int id) {
+        subtaskIds.remove(Integer.valueOf(id));
     }
 
     public void clearSubtaskIds() {
@@ -31,7 +39,7 @@ public class Epic extends Task {
     }
 
     public void updateStatus(List<Subtask> subtasks) {
-        if (subtasks.isEmpty()) {
+        if (subtasks == null || subtasks.isEmpty()) {
             setStatus(Status.NEW);
             return;
         }
@@ -40,18 +48,19 @@ public class Epic extends Task {
         boolean allDone = true;
 
         for (Subtask subtask : subtasks) {
-            if (subtask.getStatus() != Status.NEW) {
-                allNew = false;
-            }
-            if (subtask.getStatus() != Status.DONE) {
+            Status status = subtask.getStatus();
+            if (status != Status.DONE) {
                 allDone = false;
+            }
+            if (status != Status.NEW) {
+                allNew = false;
             }
         }
 
-        if (allNew) {
-            setStatus(Status.NEW);
-        } else if (allDone) {
+        if (allDone) {
             setStatus(Status.DONE);
+        } else if (allNew) {
+            setStatus(Status.NEW);
         } else {
             setStatus(Status.IN_PROGRESS);
         }
@@ -59,12 +68,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status=" + getStatus() +
-                ", subtaskIds=" + subtaskIds +
-                '}';
+        return String.format("%d,%s,%s,%s,%s",
+                id, type, name, status, description);
     }
 }
