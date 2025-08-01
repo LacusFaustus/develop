@@ -1,10 +1,9 @@
-package ru.yandex.javacourse.service;
+// src/test/java/ru/yandex/praktikum/service/InMemoryTaskManagerTest.java
+package ru.yandex.praktikum.service;
 
 import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.*;
-
+import ru.yandex.praktikum.model.*;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {

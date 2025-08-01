@@ -1,4 +1,5 @@
-package ru.yandex.javacourse.model;
+// src/main/java/ru/yandex/praktikum/model/Subtask.java
+package ru.yandex.praktikum.model;
 
 public class Subtask extends Task {
     private int epicId;
@@ -14,7 +15,6 @@ public class Subtask extends Task {
         this.epicId = other.epicId;
     }
 
-    // Новый конструктор для создания из Main
     public Subtask(String name, String description, int epicId) {
         this(0, name, description, Status.NEW, epicId);
     }

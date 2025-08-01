@@ -1,4 +1,5 @@
-package ru.yandex.javacourse.model;
+// src/main/java/ru/yandex/praktikum/model/Epic.java
+package ru.yandex.praktikum.model;
 
 import java.util.ArrayList;
 import java.util.List;

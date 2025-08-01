@@ -1,7 +1,8 @@
-package ru.yandex.javacourse.service;
+// src/main/java/ru/yandex/praktikum/service/FileBackedTaskManager.java
+package ru.yandex.praktikum.service;
 
-import ru.yandex.javacourse.exception.ManagerSaveException;
-import ru.yandex.javacourse.model.*;
+import ru.yandex.praktikum.exception.ManagerSaveException;
+import ru.yandex.praktikum.model.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -96,13 +97,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic\n");
 
-            // Сохраняем все задачи в порядке создания
             List<Task> allTasks = new ArrayList<>();
             allTasks.addAll(getAllTasks());
             allTasks.addAll(getAllEpics());
             allTasks.addAll(getAllSubtasks());
 
-            // Сортируем по ID для стабильного порядка
             allTasks.sort(Comparator.comparingInt(Task::getId));
 
             for (Task task : allTasks) {
@@ -110,7 +109,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 writer.newLine();
             }
 
-            // Сохраняем историю
             writer.newLine();
             String history = historyToString();
             if (!history.isEmpty()) {
@@ -187,10 +185,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
             }
 
-            // Восстановление состояния
             restoreManagerState(manager, tasks, epics, subtasks, maxId);
-
-            // Восстановление истории
             restoreHistory(manager, historyIds);
 
         } catch (IOException e) {
@@ -209,7 +204,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         manager.epics.putAll(epics);
         manager.subtasks.putAll(subtasks);
 
-        // Восстановление связей эпик-подзадача
         for (Subtask subtask : subtasks.values()) {
             Epic epic = epics.get(subtask.getEpicId());
             if (epic != null) {
@@ -217,7 +211,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
         }
 
-        // Обновление статусов эпиков
         for (Epic epic : epics.values()) {
             List<Subtask> epicSubtasks = new ArrayList<>();
             for (int subtaskId : epic.getSubtaskIds()) {

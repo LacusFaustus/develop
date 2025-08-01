@@ -1,6 +1,7 @@
-package ru.yandex.javacourse.service;
+// src/main/java/ru/yandex/praktikum/service/InMemoryHistoryManager.java
+package ru.yandex.praktikum.service;
 
-import ru.yandex.javacourse.model.Task;
+import ru.yandex.praktikum.model.Task;
 
 import java.util.*;
 

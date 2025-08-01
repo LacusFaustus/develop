@@ -1,4 +1,5 @@
-package ru.yandex.javacourse.model;
+// src/main/java/ru/yandex/praktikum/model/Task.java
+package ru.yandex.praktikum.model;
 
 import java.util.Objects;
 

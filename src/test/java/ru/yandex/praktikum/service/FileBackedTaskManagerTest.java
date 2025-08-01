@@ -1,13 +1,12 @@
-package ru.yandex.javacourse.service;
+// src/test/java/ru/yandex/praktikum/service/FileBackedTaskManagerTest.java
+package ru.yandex.praktikum.service;
 
 import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.*;
-
+import ru.yandex.praktikum.model.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest {

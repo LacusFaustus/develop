@@ -1,4 +1,5 @@
-package ru.yandex.javacourse.model;
+// src/test/java/ru/yandex/praktikum/model/TaskTest.java
+package ru.yandex.praktikum.model;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
