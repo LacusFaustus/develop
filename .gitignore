@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # IDE files 
 .idea/ 
 *.iml 
@@ -19,4 +18,4 @@ sources.txt
 "src/main/resources/" 
 /.idea/ 
 /.idea/ 
->>>>>>> 147c5b5df09fb44a9dc1b3691d55a84f96821b67
+
