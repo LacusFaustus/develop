@@ -39,12 +39,10 @@ class FileBackedTaskManagerTest {
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
-        assertAll(
-                () -> assertTrue(loadedManager.getAllTasks().isEmpty()),
-                () -> assertTrue(loadedManager.getAllEpics().isEmpty()),
-                () -> assertTrue(loadedManager.getAllSubtasks().isEmpty()),
-                () -> assertTrue(loadedManager.getHistory().isEmpty())
-        );
+        assertTrue(loadedManager.getAllTasks().isEmpty());
+        assertTrue(loadedManager.getAllEpics().isEmpty());
+        assertTrue(loadedManager.getAllSubtasks().isEmpty());
+        assertTrue(loadedManager.getHistory().isEmpty());
     }
 
     @Test
@@ -62,30 +60,24 @@ class FileBackedTaskManagerTest {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
         Task loadedTask = loadedManager.getTaskById(taskId);
-        assertAll(
-                () -> assertNotNull(loadedTask),
-                () -> assertEquals("Task", loadedTask.getName()),
-                () -> assertEquals("Description", loadedTask.getDescription()),
-                () -> assertEquals(Status.NEW, loadedTask.getStatus())
-        );
+        assertNotNull(loadedTask);
+        assertEquals("Task", loadedTask.getName());
+        assertEquals("Description", loadedTask.getDescription());
+        assertEquals(Status.NEW, loadedTask.getStatus());
 
         Epic loadedEpic = loadedManager.getEpicById(epicId);
-        assertAll(
-                () -> assertNotNull(loadedEpic),
-                () -> assertEquals("Epic", loadedEpic.getName()),
-                () -> assertEquals("Description", loadedEpic.getDescription()),
-                () -> assertEquals(Status.NEW, loadedEpic.getStatus()),
-                () -> assertTrue(loadedEpic.getSubtaskIds().contains(subtaskId))
-        );
+        assertNotNull(loadedEpic);
+        assertEquals("Epic", loadedEpic.getName());
+        assertEquals("Description", loadedEpic.getDescription());
+        assertEquals(Status.NEW, loadedEpic.getStatus());
+        assertTrue(loadedEpic.getSubtaskIds().contains(subtaskId));
 
         Subtask loadedSubtask = loadedManager.getSubtaskById(subtaskId);
-        assertAll(
-                () -> assertNotNull(loadedSubtask),
-                () -> assertEquals("Subtask", loadedSubtask.getName()),
-                () -> assertEquals("Description", loadedSubtask.getDescription()),
-                () -> assertEquals(Status.NEW, loadedSubtask.getStatus()),
-                () -> assertEquals(epicId, loadedSubtask.getEpicId())
-        );
+        assertNotNull(loadedSubtask);
+        assertEquals("Subtask", loadedSubtask.getName());
+        assertEquals("Description", loadedSubtask.getDescription());
+        assertEquals(Status.NEW, loadedSubtask.getStatus());
+        assertEquals(epicId, loadedSubtask.getEpicId());
     }
 
     @Test
@@ -130,11 +122,9 @@ class FileBackedTaskManagerTest {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
         List<Task> history = loadedManager.getHistory();
-        assertAll(
-                () -> assertEquals(2, history.size()),
-                () -> assertEquals(taskId1, history.get(0).getId()),
-                () -> assertEquals(taskId2, history.get(1).getId())
-        );
+        assertEquals(2, history.size());
+        assertEquals(taskId1, history.get(0).getId());
+        assertEquals(taskId2, history.get(1).getId());
     }
 
     @Test
@@ -159,11 +149,9 @@ class FileBackedTaskManagerTest {
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
-        assertAll(
-                () -> assertNotNull(loadedManager.getTaskById(1)),
-                () -> assertEquals(1, loadedManager.getHistory().size()),
-                () -> assertEquals(1, loadedManager.getHistory().get(0).getId())
-        );
+        assertNotNull(loadedManager.getTaskById(1));
+        assertEquals(1, loadedManager.getHistory().size());
+        assertEquals(1, loadedManager.getHistory().get(0).getId());
     }
 
     @Test
@@ -179,10 +167,8 @@ class FileBackedTaskManagerTest {
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
-        assertAll(
-                () -> assertEquals(100, loadedManager.getAllTasks().size()),
-                () -> assertEquals(100, loadedManager.getHistory().size())
-        );
+        assertEquals(100, loadedManager.getAllTasks().size());
+        assertEquals(100, loadedManager.getHistory().size());
     }
 
     @Test
@@ -197,11 +183,9 @@ class FileBackedTaskManagerTest {
         loadedManager.updateTask(updatedTask);
 
         Task loadedTask = loadedManager.getTaskById(taskId);
-        assertAll(
-                () -> assertEquals("Updated", loadedTask.getName()),
-                () -> assertEquals("Updated", loadedTask.getDescription()),
-                () -> assertEquals(Status.IN_PROGRESS, loadedTask.getStatus())
-        );
+        assertEquals("Updated", loadedTask.getName());
+        assertEquals("Updated", loadedTask.getDescription());
+        assertEquals(Status.IN_PROGRESS, loadedTask.getStatus());
     }
 
     @Test
@@ -220,11 +204,9 @@ class FileBackedTaskManagerTest {
 
         loadedManager.deleteEpicById(epicId);
 
-        assertAll(
-                () -> assertNull(loadedManager.getEpicById(epicId)),
-                () -> assertNull(loadedManager.getSubtaskById(subtask1Id)),
-                () -> assertNull(loadedManager.getSubtaskById(subtask2Id))
-        );
+        assertNull(loadedManager.getEpicById(epicId));
+        assertNull(loadedManager.getSubtaskById(subtask1Id));
+        assertNull(loadedManager.getSubtaskById(subtask2Id));
     }
 
     @Test
@@ -242,12 +224,10 @@ class FileBackedTaskManagerTest {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
         Epic loadedEpic = loadedManager.getEpicById(epicId);
-        assertAll(
-                () -> assertNotNull(loadedEpic),
-                () -> assertEquals(2, loadedEpic.getSubtaskIds().size()),
-                () -> assertTrue(loadedEpic.getSubtaskIds().contains(subtask1Id)),
-                () -> assertTrue(loadedEpic.getSubtaskIds().contains(subtask2Id))
-        );
+        assertNotNull(loadedEpic);
+        assertEquals(2, loadedEpic.getSubtaskIds().size());
+        assertTrue(loadedEpic.getSubtaskIds().contains(subtask1Id));
+        assertTrue(loadedEpic.getSubtaskIds().contains(subtask2Id));
     }
 
     @Test
@@ -263,9 +243,7 @@ class FileBackedTaskManagerTest {
         loadedTask.setStatus(Status.DONE);
 
         Task shouldBeOriginal = loadedManager.getTaskById(taskId);
-        assertAll(
-                () -> assertEquals("Original", shouldBeOriginal.getName()),
-                () -> assertEquals(Status.NEW, shouldBeOriginal.getStatus())
-        );
+        assertEquals("Original", shouldBeOriginal.getName());
+        assertEquals(Status.NEW, shouldBeOriginal.getStatus());
     }
 }
