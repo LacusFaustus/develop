@@ -1,7 +1,6 @@
-// src/main/java/ru/yandex/praktikum/service/InMemoryTaskManager.java
-package ru.yandex.praktikum.service;
+package ru.yandex.javacourse.praktikum.service;
 
-import ru.yandex.praktikum.model.*;
+import ru.yandex.javacourse.praktikum.model.*;
 
 import java.util.*;
 
@@ -56,9 +55,8 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
-            return new Task(task);
         }
-        return null;
+        return task;
     }
 
     @Override
@@ -66,11 +64,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         if (epic != null) {
             historyManager.add(epic);
-            Epic copy = new Epic(epic);
-            copy.getSubtaskIds().addAll(epic.getSubtaskIds());
-            return copy;
         }
-        return null;
+        return epic;
     }
 
     @Override
@@ -78,9 +73,8 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtasks.get(id);
         if (subtask != null) {
             historyManager.add(subtask);
-            return new Subtask(subtask);
         }
-        return null;
+        return subtask;
     }
 
     @Override

@@ -1,5 +1,4 @@
-// src/test/java/ru/yandex/praktikum/model/EpicTest.java
-package ru.yandex.praktikum.model;
+package ru.yandex.javacourse.praktikum.model;
 
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;

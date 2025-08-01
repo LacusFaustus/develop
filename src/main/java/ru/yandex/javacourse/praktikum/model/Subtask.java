@@ -1,5 +1,5 @@
 // src/main/java/ru/yandex/praktikum/model/Subtask.java
-package ru.yandex.praktikum.model;
+package ru.yandex.javacourse.praktikum.model;
 
 public class Subtask extends Task {
     private int epicId;

@@ -1,9 +1,8 @@
-// src/test/java/ru/yandex/praktikum/service/TaskManagerTest.java
-package ru.yandex.praktikum.service;
+package ru.yandex.javacourse.praktikum.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.praktikum.model.*;
+import ru.yandex.javacourse.praktikum.model.*;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 

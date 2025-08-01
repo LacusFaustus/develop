@@ -1,7 +1,7 @@
 // src/main/java/ru/yandex/praktikum/service/TaskManager.java
-package ru.yandex.praktikum.service;
+package ru.yandex.javacourse.praktikum.service;
 
-import ru.yandex.praktikum.model.*;
+import ru.yandex.javacourse.praktikum.model.*;
 
 import java.util.List;
 

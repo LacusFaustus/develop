@@ -1,9 +1,7 @@
-// src/main/java/ru/yandex/praktikum/service/FileBackedTaskManager.java
-package ru.yandex.praktikum.service;
+package ru.yandex.javacourse.praktikum.service;
 
-import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.model.*;
-
+import ru.yandex.javacourse.praktikum.exception.ManagerSaveException;
+import ru.yandex.javacourse.praktikum.model.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
@@ -93,7 +91,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return subtask;
     }
 
-    private void save() {
+    public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic\n");
 
@@ -101,7 +99,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             allTasks.addAll(getAllTasks());
             allTasks.addAll(getAllEpics());
             allTasks.addAll(getAllSubtasks());
-
             allTasks.sort(Comparator.comparingInt(Task::getId));
 
             for (Task task : allTasks) {
@@ -110,11 +107,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
             writer.newLine();
-            String history = historyToString();
-            if (!history.isEmpty()) {
-                writer.write(history);
-            }
-
+            writer.write(historyToString());
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка сохранения в файл", e);
         }
@@ -214,7 +207,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         for (Epic epic : epics.values()) {
             List<Subtask> epicSubtasks = new ArrayList<>();
             for (int subtaskId : epic.getSubtaskIds()) {
-                Subtask subtask = manager.subtasks.get(subtaskId);
+                Subtask subtask = subtasks.get(subtaskId);
                 if (subtask != null) {
                     epicSubtasks.add(subtask);
                 }
@@ -225,19 +218,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private static void restoreHistory(FileBackedTaskManager manager, List<Integer> historyIds) {
         for (int id : historyIds) {
-            Task task = manager.findTaskAnywhere(id);
+            Task task = manager.tasks.get(id);
+            if (task == null) task = manager.epics.get(id);
+            if (task == null) task = manager.subtasks.get(id);
+
             if (task != null) {
                 manager.historyManager.add(task);
             }
         }
-    }
-
-    private Task findTaskAnywhere(int id) {
-        Task task = tasks.get(id);
-        if (task != null) return task;
-        task = epics.get(id);
-        if (task != null) return task;
-        return subtasks.get(id);
     }
 
     private static Task taskFromString(String value) {

@@ -1,11 +1,10 @@
-// src/main/java/ru/yandex/praktikum/Main.java
-package ru.yandex.praktikum;
+package ru.yandex.javacourse.praktikum;
 
-import ru.yandex.praktikum.model.Epic;
-import ru.yandex.praktikum.model.Subtask;
-import ru.yandex.praktikum.model.Task;
-import ru.yandex.praktikum.service.TaskManager;
-import ru.yandex.praktikum.util.Managers;
+import ru.yandex.javacourse.praktikum.model.Epic;
+import ru.yandex.javacourse.praktikum.model.Subtask;
+import ru.yandex.javacourse.praktikum.model.Task;
+import ru.yandex.javacourse.praktikum.service.TaskManager;
+import ru.yandex.javacourse.praktikum.util.Managers;
 
 public class Main {
         public static void main(String[] args) {
@@ -22,8 +21,15 @@ public class Main {
                 Subtask subtask1 = new Subtask("Subtask 1", "Subtask desc", epicId1);
                 Subtask subtask2 = new Subtask("Subtask 2", "Subtask desc", epicId1);
 
-                manager.createSubtask(subtask1);
-                manager.createSubtask(subtask2);
+                int subtaskId1 = manager.createSubtask(subtask1);
+                int subtaskId2 = manager.createSubtask(subtask2);
+
+                // Просмотр задач для заполнения истории
+                manager.getTaskById(taskId1);
+                manager.getEpicById(epicId1);
+                manager.getSubtaskById(subtaskId1);
+                manager.getTaskById(taskId2);
+                manager.getSubtaskById(subtaskId2);
 
                 System.out.println("History:");
                 manager.getHistory().forEach(System.out::println);

@@ -1,5 +1,5 @@
 // src/main/java/ru/yandex/praktikum/model/TaskType.java
-package ru.yandex.praktikum.model;
+package ru.yandex.javacourse.praktikum.model;
 
 public enum TaskType {
     TASK,

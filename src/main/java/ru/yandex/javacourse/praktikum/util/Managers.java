@@ -1,10 +1,9 @@
-// src/main/java/ru/yandex/praktikum/util/Managers.java
-package ru.yandex.praktikum.util;
+package ru.yandex.javacourse.praktikum.util;
 
-import ru.yandex.praktikum.service.FileBackedTaskManager;
-import ru.yandex.praktikum.service.HistoryManager;
-import ru.yandex.praktikum.service.InMemoryHistoryManager;
-import ru.yandex.praktikum.service.TaskManager;
+import ru.yandex.javacourse.praktikum.service.FileBackedTaskManager;
+import ru.yandex.javacourse.praktikum.service.HistoryManager;
+import ru.yandex.javacourse.praktikum.service.InMemoryHistoryManager;
+import ru.yandex.javacourse.praktikum.service.TaskManager;
 
 import java.io.File;
 
