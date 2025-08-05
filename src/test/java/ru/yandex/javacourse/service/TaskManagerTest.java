@@ -3,13 +3,10 @@ package ru.yandex.javacourse.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.javacourse.model.*;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskManagerTest {
-    private TaskManager manager;
+    private InMemoryTaskManager manager;
     private Task task;
 
     @BeforeEach
