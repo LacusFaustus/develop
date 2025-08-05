@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "sprint_6-solution" ]
+    branches: [ "sprint_8-solutio" ]
   pull_request:
     branches: [ "main" ]
 
