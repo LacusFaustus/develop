@@ -2,10 +2,16 @@ package ru.yandex.javacourse.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Status;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class TaskManagerTest {
     private InMemoryTaskManager manager;

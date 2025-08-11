@@ -1,7 +1,10 @@
 package ru.yandex.javacourse.service;
 
 import org.junit.jupiter.api.BeforeEach;
-import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Status;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

@@ -1,6 +1,9 @@
 package ru.yandex.javacourse;
 
-import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Status;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
 import ru.yandex.javacourse.service.TaskManager;
 import ru.yandex.javacourse.util.Managers;
 

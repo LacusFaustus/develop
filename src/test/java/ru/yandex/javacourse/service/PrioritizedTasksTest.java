@@ -1,11 +1,14 @@
 package ru.yandex.javacourse.service;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.javacourse.model.*;
+import ru.yandex.javacourse.model.Status;
+import ru.yandex.javacourse.model.Task;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PrioritizedTasksTest {
     private InMemoryTaskManager manager = new InMemoryTaskManager();

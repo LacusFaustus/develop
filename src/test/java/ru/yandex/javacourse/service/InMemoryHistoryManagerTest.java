@@ -7,7 +7,10 @@ import ru.yandex.javacourse.model.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryHistoryManagerTest {
     private HistoryManager historyManager;

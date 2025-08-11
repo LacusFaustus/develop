@@ -6,7 +6,9 @@ import ru.yandex.javacourse.model.Status;
 import ru.yandex.javacourse.model.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskOverlapTest {
 

@@ -1,15 +1,20 @@
 package ru.yandex.javacourse.service;
 
-import org.junit.jupiter.api.*;
-import ru.yandex.javacourse.model.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Status;
+import ru.yandex.javacourse.model.Subtask;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class FileBackedTaskManagerTest {
     private File tempFile;
