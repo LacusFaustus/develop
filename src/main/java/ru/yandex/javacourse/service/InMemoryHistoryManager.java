@@ -14,7 +14,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    private final Map<Integer, Node> history = new HashMap<>();
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
     private Node head;
     private Node tail;
 
@@ -22,12 +22,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (task == null) return;
         remove(task.getId());
-        linkLast(task);
+        linkLast(new Task(task)); // Используем конструктор копирования
     }
 
     @Override
     public void remove(int id) {
-        Node node = history.remove(id);
+        Node node = nodeMap.remove(id);
         if (node != null) {
             removeNode(node);
         }
@@ -35,13 +35,20 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        List<Task> historyList = new ArrayList<>();
+        List<Task> history = new ArrayList<>();
         Node current = head;
         while (current != null) {
-            historyList.add(current.task);
+            history.add(current.task);
             current = current.next;
         }
-        return historyList;
+        return history;
+    }
+
+    @Override
+    public void clear() {
+        nodeMap.clear();
+        head = null;
+        tail = null;
     }
 
     private void linkLast(Task task) {
@@ -53,7 +60,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             newNode.prev = tail;
         }
         tail = newNode;
-        history.put(task.getId(), newNode);
+        nodeMap.put(task.getId(), newNode);
     }
 
     private void removeNode(Node node) {

@@ -1,16 +1,19 @@
 package ru.yandex.javacourse.model;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
     private Task task;
-    private Task anotherTask;
+    private LocalDateTime testTime;
 
     @BeforeEach
     void setUp() {
-        task = new Task("Task", "Description");
-        anotherTask = new Task("Another", "Description");
+        testTime = LocalDateTime.now();
+        task = new Task("Task", "Description", Status.NEW, testTime, Duration.ofMinutes(30));
     }
 
     @Test
@@ -21,22 +24,19 @@ class TaskTest {
     }
 
     @Test
-    @DisplayName("New task should have NEW status")
     void newTaskShouldHaveNewStatus() {
         assertEquals(Status.NEW, task.getStatus());
     }
 
     @Test
-    @DisplayName("Should update task status")
     void shouldUpdateTaskStatus() {
         task.setStatus(Status.IN_PROGRESS);
         assertEquals(Status.IN_PROGRESS, task.getStatus());
     }
 
     @Test
-    @DisplayName("Should access task fields")
-    void shouldAccessTaskFields() {
-        assertEquals("Task", task.getName());
-        assertEquals("Description", task.getDescription());
+    void shouldCalculateEndTime() {
+        LocalDateTime expectedEnd = testTime.plusMinutes(30);
+        assertEquals(expectedEnd, task.getEndTime());
     }
 }

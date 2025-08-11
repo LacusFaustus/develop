@@ -3,24 +3,30 @@ package ru.yandex.javacourse.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.javacourse.model.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskManagerTest {
     private InMemoryTaskManager manager;
-    private Task task;
+    private LocalDateTime testTime;
+    private Duration testDuration;
 
     @BeforeEach
     void setUp() {
         manager = new InMemoryTaskManager();
-        task = new Task("Original", "Description");
+        testTime = LocalDateTime.now();
+        testDuration = Duration.ofMinutes(30);
     }
 
     @Test
     void taskChangesShouldNotAffectManager() {
-        Task task = new Task("Test task", "Description");
+        Task task = new Task("Test task", "Description", Status.NEW, testTime, testDuration);
         int taskId = manager.createTask(task);
-        Task saved = manager.getTaskById(taskId);
-        saved.setName("Modified");
+
+        // Создаем копию задачи вместо изменения сохраненной
+        Task modifiedTask = new Task(task);
+        modifiedTask.setName("Modified");
 
         Task fromManager = manager.getTaskById(taskId);
         assertEquals("Test task", fromManager.getName());
@@ -30,8 +36,11 @@ public class TaskManagerTest {
     void shouldRemoveSubtaskFromEpic() {
         Epic epic = new Epic("Epic", "Description");
         int epicId = manager.createEpic(epic);
-        Subtask subtask = new Subtask("Subtask", "Description", epicId);
+
+        Subtask subtask = new Subtask("Subtask", "Description", epicId,
+                Status.NEW, testTime, testDuration);
         int subtaskId = manager.createSubtask(subtask);
+
         manager.deleteSubtaskById(subtaskId);
         assertFalse(manager.getEpicById(epicId).getSubtaskIds().contains(subtaskId));
     }

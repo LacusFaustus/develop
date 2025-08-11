@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "sprint_8-solution-time-and-duration" ]
+    branches: [ "sprint_8-feature" ]
   pull_request:
     branches: [ "main" ]
 
