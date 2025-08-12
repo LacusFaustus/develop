@@ -1,11 +1,14 @@
 package ru.yandex.javacourse.exception;
 
-public class ManagerSaveException extends RuntimeException {
-    public ManagerSaveException(String message) {
+public class ManagerSaveException extends RuntimeException
+{
+    public ManagerSaveException(String message)
+    {
         super(message);
     }
 
-    public ManagerSaveException(String message, Throwable cause) {
+    public ManagerSaveException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

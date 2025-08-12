@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryHistoryManager implements HistoryManager {
+public class InMemoryHistoryManager implements HistoryManager
+{
     private static class Node {
         Task task;
         Node prev;
@@ -23,14 +24,16 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node tail;
 
     @Override
-    public void add(Task task) {
+    public void add(Task task)
+    {
         if (task == null) return;
         remove(task.getId());
         linkLast(new Task(task)); // Используем конструктор копирования
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(int id)
+    {
         Node node = nodeMap.remove(id);
         if (node != null) {
             removeNode(node);
@@ -38,7 +41,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public List<Task> getHistory() {
+    public List<Task> getHistory()
+    {
         List<Task> history = new ArrayList<>();
         Node current = head;
         while (current != null) {
@@ -49,13 +53,15 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
         nodeMap.clear();
         head = null;
         tail = null;
     }
 
-    private void linkLast(Task task) {
+    private void linkLast(Task task)
+    {
         Node newNode = new Node(task);
         if (tail == null) {
             head = newNode;
@@ -67,7 +73,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         nodeMap.put(task.getId(), newNode);
     }
 
-    private void removeNode(Node node) {
+    private void removeNode(Node node)
+    {
         if (node.prev != null) {
             node.prev.next = node.next;
         } else {

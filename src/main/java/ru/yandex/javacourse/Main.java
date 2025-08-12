@@ -1,5 +1,8 @@
 package ru.yandex.javacourse;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import ru.yandex.javacourse.model.Epic;
 import ru.yandex.javacourse.model.Status;
 import ru.yandex.javacourse.model.Subtask;
@@ -7,11 +10,10 @@ import ru.yandex.javacourse.model.Task;
 import ru.yandex.javacourse.service.TaskManager;
 import ru.yandex.javacourse.util.Managers;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-public class Main {
-    public static void main(String[] args) {
+public class Main
+{
+    public static void main(String[] args)
+    {
         TaskManager manager = Managers.getDefault();
 
         // Create tasks with time

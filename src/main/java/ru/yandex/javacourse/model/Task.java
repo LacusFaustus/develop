@@ -4,7 +4,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task {
+public class Task
+{
     protected int id;
     protected String name;
     protected String description;
@@ -13,7 +14,8 @@ public class Task {
     protected Duration duration;
 
     public Task(String name, String description, Status status,
-                LocalDateTime startTime, Duration duration) {
+                LocalDateTime startTime, Duration duration)
+    {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -22,7 +24,8 @@ public class Task {
     }
 
     public Task(int id, String name, String description, Status status,
-                LocalDateTime startTime, Duration duration) {
+                LocalDateTime startTime, Duration duration)
+    {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -31,11 +34,13 @@ public class Task {
         this.duration = duration;
     }
 
-    public Task(int id, String name, String description, Status status) {
+    public Task(int id, String name, String description, Status status)
+    {
         this(id, name, description, status, null, Duration.ZERO);
     }
 
-    public Task(Task other) {
+    public Task(Task other)
+    {
         this(other.id, other.name, other.description, other.status,
                 other.startTime, other.duration);
     }
@@ -53,19 +58,23 @@ public class Task {
     public Duration getDuration() { return duration; }
     public void setDuration(Duration duration) { this.duration = duration; }
 
-    public LocalDateTime getEndTime() {
-        if (startTime == null || duration == null) {
+    public LocalDateTime getEndTime()
+    {
+        if (startTime == null || duration == null)
+        {
             return null;
         }
         return startTime.plus(duration);
     }
 
-    public String getType() {
+    public String getType()
+    {
         return "TASK";
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
