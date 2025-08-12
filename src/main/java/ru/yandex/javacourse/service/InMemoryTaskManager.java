@@ -1,12 +1,12 @@
 package ru.yandex.javacourse.service;
 
+import java.time.Duration;
 import ru.yandex.javacourse.exception.ManagerSaveException;
 import ru.yandex.javacourse.model.Epic;
 import ru.yandex.javacourse.model.Subtask;
 import ru.yandex.javacourse.model.Task;
 import ru.yandex.javacourse.util.Managers;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,7 +31,8 @@ public class InMemoryTaskManager implements TaskManager
     );
 
     @Override
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasks()
+    {
         return new ArrayList<>(tasks.values());
     }
 
@@ -39,7 +40,8 @@ public class InMemoryTaskManager implements TaskManager
     public Task getTaskById(int id)
     {
         Task task = tasks.get(id);
-        if (task != null) {
+        if (task != null)
+        {
             historyManager.add(task);
         }
         return task;
@@ -58,7 +60,8 @@ public class InMemoryTaskManager implements TaskManager
     @Override
     public void updateTask(Task updatedTask)
     {
-        if (!tasks.containsKey(updatedTask.getId())) {
+        if (!tasks.containsKey(updatedTask.getId()))
+        {
             return;
         }
         validateTaskTime(updatedTask);
@@ -71,7 +74,8 @@ public class InMemoryTaskManager implements TaskManager
     public void deleteTaskById(int id)
     {
         Task task = tasks.remove(id);
-        if (task != null) {
+        if (task != null)
+        {
             removeFromPrioritized(task);
             historyManager.remove(id);
         }
@@ -80,7 +84,8 @@ public class InMemoryTaskManager implements TaskManager
     @Override
     public void deleteAllTasks()
     {
-        tasks.values().forEach(task -> {
+        tasks.values().forEach(task ->
+        {
             removeFromPrioritized(task);
             historyManager.remove(task.getId());
         });
@@ -88,7 +93,8 @@ public class InMemoryTaskManager implements TaskManager
     }
 
     @Override
-    public List<Epic> getAllEpics() {
+    public List<Epic> getAllEpics()
+    {
         return new ArrayList<>(epics.values());
     }
 
@@ -96,7 +102,8 @@ public class InMemoryTaskManager implements TaskManager
     public Epic getEpicById(int id)
     {
         Epic epic = epics.get(id);
-        if (epic != null) {
+        if (epic != null)
+        {
             historyManager.add(epic);
         }
         return epic;
@@ -114,7 +121,8 @@ public class InMemoryTaskManager implements TaskManager
     public void updateEpic(Epic updatedEpic)
     {
         Epic epic = epics.get(updatedEpic.getId());
-        if (epic == null) {
+        if (epic == null)
+        {
             return;
         }
         epic.setName(updatedEpic.getName());
@@ -125,8 +133,10 @@ public class InMemoryTaskManager implements TaskManager
     public void deleteEpicById(int id)
     {
         Epic epic = epics.remove(id);
-        if (epic != null) {
-            for (Integer subtaskId : epic.getSubtaskIds()) {
+        if (epic != null)
+        {
+            for (Integer subtaskId : epic.getSubtaskIds())
+            {
                 subtasks.remove(subtaskId);
                 historyManager.remove(subtaskId);
             }
@@ -137,7 +147,8 @@ public class InMemoryTaskManager implements TaskManager
     @Override
     public void deleteAllEpics()
     {
-        subtasks.values().forEach(subtask -> {
+        subtasks.values().forEach(subtask ->
+        {
             removeFromPrioritized(subtask);
             historyManager.remove(subtask.getId());
         });
@@ -147,7 +158,8 @@ public class InMemoryTaskManager implements TaskManager
     }
 
     @Override
-    public List<Subtask> getAllSubtasks() {
+    public List<Subtask> getAllSubtasks()
+    {
         return new ArrayList<>(subtasks.values());
     }
 
@@ -155,7 +167,8 @@ public class InMemoryTaskManager implements TaskManager
     public Subtask getSubtaskById(int id)
     {
         Subtask subtask = subtasks.get(id);
-        if (subtask != null) {
+        if (subtask != null)
+        {
             historyManager.add(subtask);
         }
         return subtask;
@@ -165,7 +178,8 @@ public class InMemoryTaskManager implements TaskManager
     public int createSubtask(Subtask subtask)
     {
         validateTaskTime(subtask);
-        if (!epics.containsKey(subtask.getEpicId())) {
+        if (!epics.containsKey(subtask.getEpicId()))
+        {
             throw new ManagerSaveException("Epic not found for subtask");
         }
         subtask.setId(nextId++);
@@ -182,7 +196,8 @@ public class InMemoryTaskManager implements TaskManager
     public void updateSubtask(Subtask updatedSubtask)
     {
         Subtask subtask = subtasks.get(updatedSubtask.getId());
-        if (subtask == null) {
+        if (subtask == null)
+        {
             return;
         }
         validateTaskTime(updatedSubtask);
@@ -211,7 +226,8 @@ public class InMemoryTaskManager implements TaskManager
     @Override
     public void deleteAllSubtasks()
     {
-        subtasks.values().forEach(subtask -> {
+        subtasks.values().forEach(subtask ->
+        {
             removeFromPrioritized(subtask);
             historyManager.remove(subtask.getId());
             Epic epic = epics.get(subtask.getEpicId());
@@ -233,12 +249,14 @@ public class InMemoryTaskManager implements TaskManager
     }
 
     @Override
-    public List<Task> getPrioritizedTasks() {
+    public List<Task> getPrioritizedTasks()
+    {
         return new ArrayList<>(prioritizedTasks);
     }
 
     @Override
-    public List<Task> getHistory() {
+    public List<Task> getHistory()
+    {
         return historyManager.getHistory();
     }
 
@@ -254,7 +272,8 @@ public class InMemoryTaskManager implements TaskManager
         if (epic == null) return;
 
         List<Subtask> subtasks = getSubtasksByEpicId(epicId);
-        if (subtasks.isEmpty()) {
+        if (subtasks.isEmpty())
+        {
             epic.setStartTime(null);
             epic.setDuration(Duration.ZERO);
             epic.setEndTime(null);
@@ -265,24 +284,30 @@ public class InMemoryTaskManager implements TaskManager
         LocalDateTime maxEndTime = null;
         Duration totalDuration = Duration.ZERO;
 
-        for (Subtask subtask : subtasks) {
+        for (Subtask subtask : subtasks)
+        {
             LocalDateTime start = subtask.getStartTime();
             LocalDateTime end = subtask.getEndTime();
             Duration subtaskDuration = subtask.getDuration();
 
-            if (start != null) {
-                if (minStartTime == null || start.isBefore(minStartTime)) {
+            if (start != null)
+            {
+                if (minStartTime == null || start.isBefore(minStartTime))
+                {
                     minStartTime = start;
                 }
             }
 
-            if (end != null) {
-                if (maxEndTime == null || end.isAfter(maxEndTime)) {
+            if (end != null)
+            {
+                if (maxEndTime == null || end.isAfter(maxEndTime))
+                {
                     maxEndTime = end;
                 }
             }
 
-            if (subtaskDuration != null) {
+            if (subtaskDuration != null)
+            {
                 totalDuration = totalDuration.plus(subtaskDuration);
             }
         }
@@ -296,9 +321,11 @@ public class InMemoryTaskManager implements TaskManager
     {
         if (newTask.getStartTime() == null) return;
 
-        for (Task task : prioritizedTasks) {
+        for (Task task : prioritizedTasks)
+        {
             if (task.getId() == newTask.getId()) continue;
-            if (isTimeOverlap(newTask, task)) {
+            if (isTimeOverlap(newTask, task))
+            {
                 throw new ManagerSaveException("Task time overlap detected");
             }
         }
@@ -318,12 +345,14 @@ public class InMemoryTaskManager implements TaskManager
 
     protected void addToPrioritized(Task task)
     {
-        if (task.getStartTime() != null) {
+        if (task.getStartTime() != null)
+        {
             prioritizedTasks.add(task);
         }
     }
 
-    protected void removeFromPrioritized(Task task) {
+    protected void removeFromPrioritized(Task task)
+    {
         prioritizedTasks.remove(task);
     }
 }

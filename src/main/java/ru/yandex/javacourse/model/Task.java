@@ -45,18 +45,54 @@ public class Task
                 other.startTime, other.duration);
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
-    public Duration getDuration() { return duration; }
-    public void setDuration(Duration duration) { this.duration = duration; }
+    public int getId()
+    {
+        return id;
+    }
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+    public String getName()
+    {
+        return name;
+    }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    public String getDescription()
+    {
+        return description;
+    }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+    public Status getStatus()
+    {
+        return status;
+    }
+    public void setStatus(Status status)
+    {
+        this.status = status;
+    }
+    public LocalDateTime getStartTime()
+    {
+        return startTime;
+    }
+    public void setStartTime(LocalDateTime startTime)
+    {
+        this.startTime = startTime;
+    }
+    public Duration getDuration()
+    {
+        return duration;
+    }
+    public void setDuration(Duration duration)
+    {
+        this.duration = duration;
+    }
 
     public LocalDateTime getEndTime()
     {
@@ -87,7 +123,8 @@ public class Task
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(id, name, description, status, startTime, duration);
     }
 }
