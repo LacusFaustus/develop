@@ -1,11 +1,6 @@
 package ru.yandex.javacourse.service;
 
 import java.time.Duration;
-import ru.yandex.javacourse.exception.ManagerSaveException;
-import ru.yandex.javacourse.model.Epic;
-import ru.yandex.javacourse.model.Subtask;
-import ru.yandex.javacourse.model.Task;
-import ru.yandex.javacourse.util.Managers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,6 +10,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import ru.yandex.javacourse.exception.ManagerSaveException;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
+import ru.yandex.javacourse.util.Managers;
 
 public class InMemoryTaskManager implements TaskManager
 {

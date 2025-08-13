@@ -1,13 +1,9 @@
 package ru.yandex.javacourse.service;
 
-import ru.yandex.javacourse.exception.ManagerSaveException;
-import ru.yandex.javacourse.model.Epic;
-import ru.yandex.javacourse.model.Status;
-import ru.yandex.javacourse.model.Subtask;
-import ru.yandex.javacourse.model.Task;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +13,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.io.BufferedReader;
+
+import ru.yandex.javacourse.exception.ManagerSaveException;
+import ru.yandex.javacourse.model.Epic;
+import ru.yandex.javacourse.model.Status;
+import ru.yandex.javacourse.model.Subtask;
+import ru.yandex.javacourse.model.Task;
 
 public class FileBackedTaskManager extends InMemoryTaskManager
 {
@@ -103,10 +104,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager
                     return null;
             }
         }
-        catch
-        (Exception e)
-        {
-            throw new ManagerSaveException("Error parsing task from string: " + line, e);
+        catch (Exception e) {
+              throw new ManagerSaveException("Error parsing task from string: " + line, e);
         }
     }
 

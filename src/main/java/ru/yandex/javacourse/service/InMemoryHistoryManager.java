@@ -1,10 +1,11 @@
 package ru.yandex.javacourse.service;
 
-import ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import ru.yandex.javacourse.model.Task;
 
 public class InMemoryHistoryManager implements HistoryManager
 {
@@ -81,21 +82,15 @@ public class InMemoryHistoryManager implements HistoryManager
 
     private void removeNode(Node node)
     {
-        if (node.prev != null)
-        {
+        if (node.prev != null) {
             node.prev.next = node.next;
-        }
-        else
-        {
+        } else {
             head = node.next;
         }
 
-        if (node.next != null)
-        {
+        if (node.next != null) {
             node.next.prev = node.prev;
-        }
-        else
-        {
+        } else {
             tail = node.prev;
         }
     }
