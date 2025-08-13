@@ -43,7 +43,8 @@ public class Epic extends Task
 
     public void updateStatus(List<Subtask> subtasks)
     {
-        if (subtasks.isEmpty()) {
+        if (subtasks.isEmpty())
+        {
             status = Status.NEW;
             return;
         }
@@ -51,27 +52,34 @@ public class Epic extends Task
         boolean allNew = true;
         boolean allDone = true;
 
-        for (Subtask subtask : subtasks) {
-            if (subtask.getStatus() != Status.NEW) {
+        for (Subtask subtask : subtasks)
+        {
+            if (subtask.getStatus() != Status.NEW)
+            {
                 allNew = false;
             }
-            if (subtask.getStatus() != Status.DONE) {
+            if (subtask.getStatus() != Status.DONE)
+            {
                 allDone = false;
             }
         }
 
-        if (allNew) {
+        if (allNew)
+        {
             status = Status.NEW;
-        } else if (allDone) {
+        } else if (allDone)
+        {
             status = Status.DONE;
-        } else {
+        } else
+        {
             status = Status.IN_PROGRESS;
         }
     }
 
     public void calculateTime(List<Subtask> subtasks)
     {
-        if (subtasks.isEmpty()) {
+        if (subtasks.isEmpty())
+        {
             startTime = null;
             duration = Duration.ZERO;
             endTime = null;
@@ -87,10 +95,12 @@ public class Epic extends Task
             LocalDateTime end = subtask.getEndTime();
 
             if (start != null) {
-                if (earliest == null || start.isBefore(earliest)) {
+                if (earliest == null || start.isBefore(earliest))
+                {
                     earliest = start;
                 }
-                if (end != null && (latest == null || end.isAfter(latest))) {
+                if (end != null && (latest == null || end.isAfter(latest)))
+                {
                     latest = end;
                 }
                 totalDuration = totalDuration.plus(subtask.getDuration());
@@ -104,7 +114,8 @@ public class Epic extends Task
 
     public void addSubtaskId(int subtaskId)
     {
-        if (!subtaskIds.contains(subtaskId)) {
+        if (!subtaskIds.contains(subtaskId))
+        {
             subtaskIds.add(subtaskId);
         }
     }
@@ -115,7 +126,8 @@ public class Epic extends Task
     }
 
     @Override
-    public String getType() {
+    public String getType()
+    {
         return "EPIC";
     }
 
@@ -130,7 +142,8 @@ public class Epic extends Task
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(super.hashCode(), subtaskIds);
     }
 }

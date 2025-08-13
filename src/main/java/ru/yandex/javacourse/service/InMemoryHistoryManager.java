@@ -2,14 +2,14 @@ package ru.yandex.javacourse.service;
 
 import ru.yandex.javacourse.model.Task;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager
 {
-    private static class Node {
+    private static class Node
+    {
         Task task;
         Node prev;
         Node next;
@@ -36,7 +36,8 @@ public class InMemoryHistoryManager implements HistoryManager
     public void remove(int id)
     {
         Node node = nodeMap.remove(id);
-        if (node != null) {
+        if (node != null)
+        {
             removeNode(node);
         }
     }
@@ -68,7 +69,9 @@ public class InMemoryHistoryManager implements HistoryManager
         if (tail == null)
         {
             head = newNode;
-        } else {
+        }
+        else
+        {
             tail.next = newNode;
             newNode.prev = tail;
         }
@@ -81,14 +84,18 @@ public class InMemoryHistoryManager implements HistoryManager
         if (node.prev != null)
         {
             node.prev.next = node.next;
-        } else {
+        }
+        else
+        {
             head = node.next;
         }
 
         if (node.next != null)
         {
             node.next.prev = node.prev;
-        } else {
+        }
+        else
+        {
             tail = node.prev;
         }
     }

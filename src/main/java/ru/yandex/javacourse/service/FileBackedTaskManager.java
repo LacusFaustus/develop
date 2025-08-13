@@ -5,10 +5,9 @@ import ru.yandex.javacourse.model.Epic;
 import ru.yandex.javacourse.model.Status;
 import ru.yandex.javacourse.model.Subtask;
 import ru.yandex.javacourse.model.Task;
-
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -54,7 +53,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager
                     addTaskToCollections(task);
                 }
             }
-
             // Load history
             String historyLine = reader.readLine();
             if (historyLine != null && !historyLine.isEmpty())
@@ -62,7 +60,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager
                 restoreHistory(parseHistory(historyLine));
             }
         }
-        catch (IOException e)
+        catch
+        (IOException e)
         {
             throw new ManagerSaveException("Failed to load from file", e);
         }
@@ -73,7 +72,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager
         String[] fields = line.split(",", -1);
         if (fields.length < 6) return null;
 
-        try {
+        try
+        {
             int id = Integer.parseInt(fields[0]);
             String type = fields[1];
             String name = fields[2];
@@ -85,7 +85,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager
             Duration duration = fields.length > 7 && !fields[7].isEmpty() ?
                     Duration.ofMinutes(Long.parseLong(fields[7])) : Duration.ZERO;
 
-            switch (type) {
+            switch (type)
+            {
                 case "TASK":
                     Task task = new Task(id, name, description, status, startTime, duration);
                     return task;
@@ -102,7 +103,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager
                     return null;
             }
         }
-        catch (Exception e)
+        catch
+        (Exception e)
         {
             throw new ManagerSaveException("Error parsing task from string: " + line, e);
         }
