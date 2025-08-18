@@ -2,9 +2,9 @@ name: Java CI
 
 on:
   push:
-    branches: [ "sprint_8-feature" ]  # Триггер для вашей ветки
+    branches: [ "sprint_9-solution-http-api" ]  # Триггер для вашей ветки
   pull_request:
-    branches: [ "sprint_8-feature" ]  # И для PR в эту ветку
+    branches: [ "sprint_9-solution-http-api" ]  # И для PR в эту ветку
 
 jobs:
   build:
