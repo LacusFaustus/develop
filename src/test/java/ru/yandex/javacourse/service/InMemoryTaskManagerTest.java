@@ -10,6 +10,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Тесты для InMemoryTaskManager.
+ */
 class InMemoryTaskManagerTest extends AbstractTaskManagerTest<InMemoryTaskManager> {
 
     @Override
@@ -17,6 +20,9 @@ class InMemoryTaskManagerTest extends AbstractTaskManagerTest<InMemoryTaskManage
         manager = new InMemoryTaskManager();
     }
 
+    /**
+     * Тест правильного порядка задач по приоритету.
+     */
     @Test
     void testPrioritizedTasksOrder() {
         manager.deleteAllTasks();
@@ -31,8 +37,8 @@ class InMemoryTaskManagerTest extends AbstractTaskManagerTest<InMemoryTaskManage
         int id2 = manager.createTask(task2);
 
         List<Task> prioritized = manager.getPrioritizedTasks();
-        assertEquals(2, prioritized.size());
-        assertEquals(id2, prioritized.get(0).getId());
-        assertEquals(id1, prioritized.get(1).getId());
+        assertEquals(2, prioritized.size(), "Неверное количество задач в списке приоритетов");
+        assertEquals(id2, prioritized.get(0).getId(), "Первая задача должна быть с более ранним временем");
+        assertEquals(id1, prioritized.get(1).getId(), "Вторая задача должна быть с более поздним временем");
     }
 }
