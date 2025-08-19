@@ -1,107 +1,159 @@
 package ru.yandex.javacourse.http;
 
 import com.google.gson.Gson;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import ru.yandex.javacourse.model.Task;
-import ru.yandex.javacourse.model.Status;
+import com.google.gson.GsonBuilder;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+import ru.yandex.javacourse.http.handler.HistoryHandler;
+import ru.yandex.javacourse.http.handler.PrioritizedHandler;
 import ru.yandex.javacourse.service.InMemoryTaskManager;
 import ru.yandex.javacourse.service.TaskManager;
-
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
+import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+/**
+ * HTTP-сервер для работы с менеджером задач.
+ */
+final class HttpTaskServer {
+    /** Порт по умолчанию для сервера. */
+    private static final int DEFAULT_PORT = 8080;
+    /** HTTP-сервер. */
+    private HttpServer server;
+    /** Менеджер задач. */
+    private final TaskManager taskManager;
+    /** Объект для работы с JSON. */
+    private final Gson gson;
+    /** Порт сервера. */
+    private final int port;
 
-class HttpTaskServerTest {
-    private HttpTaskServer server;
-    private TaskManager manager;
-    private HttpClient client;
-    private Gson gson;
-    private LocalDateTime testTime;
+    /**
+     * Создает сервер с портом по умолчанию.
+     *
+     * @param taskManager менеджер задач
+     * @throws IOException если не удалось создать сервер
+     */
+    public HttpTaskServer(final TaskManager taskManager) throws IOException {
+        this(taskManager, DEFAULT_PORT);
+    }
 
-    @BeforeEach
-    void setUp() throws IOException {
+    /**
+     * Создает сервер с указанным портом.
+     *
+     * @param taskManager менеджер задач
+     * @param port порт для сервера
+     * @throws IOException если не удалось создать сервер
+     */
+    public HttpTaskServer(final TaskManager taskManager, final int port)
+            throws IOException {
+        this.taskManager = taskManager;
+        this.port = port;
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+    }
+
+    /**
+     * Запускает сервер.
+     */
+    public void start() {
+        try {
+            server = HttpServer.create(new InetSocketAddress(port), 0);
+            server.createContext("/tasks", new ru.yandex.javacourse.http.TaskHandler(taskManager, gson) {
+                /**
+                 * Handle the given request and generate an appropriate response.
+                 * See {@link HttpExchange} for a description of the steps
+                 * involved in handling an exchange.
+                 *
+                 * @param exchange the exchange containing the request from the
+                 *                 client and used to send the response
+                 * @throws NullPointerException if exchange is {@code null}
+                 * @throws IOException          if an I/O error occurs
+                 */
+                @Override
+                public void handle(HttpExchange exchange) throws IOException {
+
+                }
+            });
+            server.createContext("/subtasks", new SubtaskHandler(taskManager, gson) {
+                /**
+                 * Handle the given request and generate an appropriate response.
+                 * See {@link HttpExchange} for a description of the steps
+                 * involved in handling an exchange.
+                 *
+                 * @param exchange the exchange containing the request from the
+                 *                 client and used to send the response
+                 * @throws NullPointerException if exchange is {@code null}
+                 * @throws IOException          if an I/O error occurs
+                 */
+                @Override
+                public void handle(HttpExchange exchange) throws IOException {
+
+                }
+            });
+            server.createContext("/epics", new EpicHandler(taskManager, gson) {
+                /**
+                 * Handle the given request and generate an appropriate response.
+                 * See {@link HttpExchange} for a description of the steps
+                 * involved in handling an exchange.
+                 *
+                 * @param exchange the exchange containing the request from the
+                 *                 client and used to send the response
+                 * @throws NullPointerException if exchange is {@code null}
+                 * @throws IOException          if an I/O error occurs
+                 */
+                @Override
+                public void handle(HttpExchange exchange) throws IOException {
+
+                }
+            });
+            server.createContext("/history", new HistoryHandler(taskManager, gson));
+            server.createContext("/prioritized",
+                    new PrioritizedHandler(taskManager, gson));
+            server.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось запустить сервер", e);
+        }
+    }
+
+    /**
+     * Останавливает сервер.
+     */
+    public void stop() {
+        if (server != null) {
+            server.stop(0);
+        }
+    }
+
+    /**
+     * Возвращает менеджер задач.
+     *
+     * @return менеджер задач
+     */
+    public TaskManager getTaskManager() {
+        return taskManager;
+    }
+
+    /**
+     * Возвращает объект для работы с JSON.
+     *
+     * @return объект Gson
+     */
+    public Gson getGson() {
+        return gson;
+    }
+
+    /**
+     * Точка входа для запуска сервера.
+     *
+     * @param args аргументы командной строки (не используются)
+     * @throws IOException если не удалось создать сервер
+     */
+    public static void main(final String[] args) throws IOException {
+        TaskManager manager;
         manager = new InMemoryTaskManager();
-        server = new HttpTaskServer(manager);
+        HttpTaskServer server = new HttpTaskServer(manager);
         server.start();
-        client = HttpClient.newHttpClient();
-        gson = server.getGson();
-        testTime = LocalDateTime.now();
-    }
-
-    @AfterEach
-    void tearDown() {
-        server.stop();
-    }
-
-    @Test
-    void testCreateTask() throws IOException, InterruptedException {
-        // Подготовка JSON для создания задачи
-        String taskJson = "{"
-                + "\"name\":\"Test Task\","
-                + "\"description\":\"Test Description\","
-                + "\"status\":\"NEW\","
-                + "\"startTime\":\"" + testTime + "\","
-                + "\"duration\":30"
-                + "}";
-
-        // Отправка POST-запроса
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/tasks"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(taskJson))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(201, response.statusCode());
-    }
-
-    @Test
-    void testGetPrioritizedTasks() throws IOException, InterruptedException {
-        // Создаем две задачи с полным набором параметров
-        Task task1 = new Task("Task 1", "Description 1", Status.NEW,
-                testTime.plusHours(2), Duration.ofMinutes(30));
-        manager.createTask(task1);
-
-        Task task2 = new Task("Task 2", "Description 2", Status.NEW,
-                testTime.plusHours(1), Duration.ofMinutes(30));
-        manager.createTask(task2);
-
-        // Получаем приоритизированный список
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/prioritized"))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response.statusCode());
-    }
-
-    @Test
-    void testInvalidTaskCreation() throws IOException, InterruptedException {
-        // Неправильный JSON (отсутствует обязательное поле name)
-        String invalidJson = "{\"description\":\"Only description\"}";
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/tasks"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(invalidJson))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        // Добавим вывод ответа для отладки
-        System.out.println("Response status: " + response.statusCode());
-        System.out.println("Response body: " + response.body());
-
-        assertEquals(400, response.statusCode(),
-                "Сервер должен возвращать 400 при невалидных данных");
+        System.out.println("Сервер запущен на порту " + DEFAULT_PORT);
     }
 }

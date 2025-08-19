@@ -19,7 +19,6 @@ class InMemoryTaskManagerTest extends AbstractTaskManagerTest<InMemoryTaskManage
 
     @Test
     void testPrioritizedTasksOrder() {
-        // Очищаем менеджер перед тестом
         manager.deleteAllTasks();
         manager.deleteAllSubtasks();
 

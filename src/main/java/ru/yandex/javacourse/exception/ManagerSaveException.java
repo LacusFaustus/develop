@@ -1,14 +1,26 @@
 package ru.yandex.javacourse.exception;
 
-public class ManagerSaveException extends RuntimeException
-{
-    public ManagerSaveException(String message)
-    {
+/**
+ * Исключение, выбрасываемое при ошибках сохранения в менеджере задач.
+ */
+public class ManagerSaveException extends RuntimeException {
+
+    /**
+     * Создает исключение с указанным сообщением об ошибке.
+     *
+     * @param message сообщение об ошибке
+     */
+    public ManagerSaveException(final String message) {
         super(message);
     }
 
-    public ManagerSaveException(String message, Throwable cause)
-    {
+    /**
+     * Создает исключение с указанным сообщением об ошибке и причиной.
+     *
+     * @param message сообщение об ошибке
+     * @param cause причина исключения
+     */
+    public ManagerSaveException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

@@ -19,7 +19,7 @@ public abstract class AbstractTaskManagerTest<T extends TaskManager> {
     protected int subtaskId;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         initManager();
 
         LocalDateTime testStartTime = LocalDateTime.of(2023, 1, 1, 10, 0);

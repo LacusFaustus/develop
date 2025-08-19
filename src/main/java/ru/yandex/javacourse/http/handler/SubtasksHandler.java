@@ -10,21 +10,36 @@ import ru.yandex.javacourse.service.TaskManager;
 import java.io.IOException;
 import java.util.List;
 
-public class SubtasksHandler extends BaseHttpHandler {
+/**
+ * Обработчик HTTP-запросов для работы с подзадачами.
+ */
+public final class SubtasksHandler extends BaseHttpHandler {
+    /** Менеджер задач. */
     private final TaskManager taskManager;
+    /** Объект для JSON-сериализации. */
     private final Gson gson;
 
-    public SubtasksHandler(TaskManager taskManager, Gson gson) {
+    /**
+     * Конструктор обработчика подзадач.
+     * @param taskManager менеджер задач
+     * @param gson объект для JSON-сериализации
+     */
+    public SubtasksHandler(final TaskManager taskManager, final Gson gson) {
         this.taskManager = taskManager;
         this.gson = gson;
     }
 
+    /**
+     * Обрабатывает HTTP-запрос.
+     * @param exchange HTTP-обмен
+     * @throws IOException если произошла ошибка ввода-вывода
+     */
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(final HttpExchange exchange) throws IOException {
         try {
-            String method = exchange.getRequestMethod();
-            String path = exchange.getRequestURI().getPath();
-            String[] pathParts = path.split("/");
+            final String method = exchange.getRequestMethod();
+            final String path = exchange.getRequestURI().getPath();
+            final String[] pathParts = path.split("/");
 
             switch (method) {
                 case "GET":
@@ -48,34 +63,37 @@ public class SubtasksHandler extends BaseHttpHandler {
         }
     }
 
-    private void handleGet(HttpExchange exchange, String[] pathParts) throws IOException {
+    private void handleGet(final HttpExchange exchange, final String[] pathParts)
+            throws IOException {
+        final int expectedPathPartsLength = 3;
         if (pathParts.length == 2) {
-            List<Subtask> subtasks = taskManager.getAllSubtasks();
+            final List<Subtask> subtasks = taskManager.getAllSubtasks();
             sendSuccess(exchange, gson.toJson(subtasks));
-        } else if (pathParts.length == 3) {
-            int id = Integer.parseInt(pathParts[2]);
-            Subtask subtask = taskManager.getSubtaskById(id);
+        } else if (pathParts.length == expectedPathPartsLength) {
+            final int id = Integer.parseInt(pathParts[2]);
+            final Subtask subtask = taskManager.getSubtaskById(id);
             if (subtask != null) {
                 sendSuccess(exchange, gson.toJson(subtask));
             } else {
-                sendNotFound(exchange, "{\"message\":\"Подзадача с id=" + id + " не найдена\"}");
+                sendNotFound(exchange,
+                        "{\"message\":\"Подзадача с id=" + id + " не найдена\"}");
             }
         } else {
             sendNotFound(exchange, "{\"message\":\"Неверный URL\"}");
         }
     }
 
-    private void handlePost(HttpExchange exchange) throws IOException {
-        String requestBody = readRequestBody(exchange);
+    private void handlePost(final HttpExchange exchange) throws IOException {
+        final String requestBody = readRequestBody(exchange);
         try {
-            Subtask subtask = gson.fromJson(requestBody, Subtask.class);
+            final Subtask subtask = gson.fromJson(requestBody, Subtask.class);
             if (subtask == null) {
                 sendBadRequest(exchange, "{\"message\":\"Некорректный формат подзадачи\"}");
                 return;
             }
 
             if (subtask.getId() == 0) {
-                int id = taskManager.createSubtask(subtask);
+                final int id = taskManager.createSubtask(subtask);
                 sendCreated(exchange, gson.toJson(taskManager.getSubtaskById(id)));
             } else {
                 taskManager.updateSubtask(subtask);
@@ -83,12 +101,16 @@ public class SubtasksHandler extends BaseHttpHandler {
             }
         } catch (JsonSyntaxException e) {
             sendBadRequest(exchange, "{\"message\":\"Некорректный JSON\"}");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void handleDelete(HttpExchange exchange, String[] pathParts) throws IOException {
-        if (pathParts.length == 3) {
-            int id = Integer.parseInt(pathParts[2]);
+    private void handleDelete(final HttpExchange exchange, final String[] pathParts)
+            throws IOException {
+        final int expectedPathPartsLength = 3;
+        if (pathParts.length == expectedPathPartsLength) {
+            final int id = Integer.parseInt(pathParts[2]);
             taskManager.deleteSubtaskById(id);
             sendSuccess(exchange, "{\"message\":\"Подзадача с id=" + id + " удалена\"}");
         } else {
