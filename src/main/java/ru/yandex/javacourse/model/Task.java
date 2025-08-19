@@ -5,20 +5,22 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Базовый класс для представления задачи.
+ * Базовый класс для представления задачи в системе управления задачами.
+ * Содержит основную информацию о задаче: идентификатор, название, описание,
+ * статус, время начала и продолжительность выполнения.
  */
 public class Task {
-    /** Уникальный идентификатор задачи. */
+    /** Уникальный идентификатор задачи */
     private int id;
-    /** Название задачи. */
+    /** Название задачи */
     private String name;
-    /** Описание задачи. */
+    /** Подробное описание задачи */
     private String description;
-    /** Статус задачи. */
-    protected Status status;
-    /** Время начала выполнения задачи. */
+    /** Текущий статус выполнения задачи */
+    private Status status;
+    /** Время начала выполнения задачи */
     private LocalDateTime startTime;
-    /** Продолжительность выполнения задачи. */
+    /** Продолжительность выполнения задачи */
     private Duration duration;
 
     /**
@@ -26,12 +28,12 @@ public class Task {
      *
      * @param name название задачи
      * @param description описание задачи
-     * @param status статус задачи
-     * @param startTime время начала выполнения
+     * @param status статус задачи (NEW, IN_PROGRESS, DONE)
+     * @param startTime время начала выполнения (может быть null)
      * @param duration продолжительность выполнения
      */
-    public Task(final String name, final String description, final Status status,
-                final LocalDateTime startTime, final Duration duration) {
+    public Task(String name, String description, Status status,
+                LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -41,6 +43,7 @@ public class Task {
 
     /**
      * Конструктор для создания задачи с существующим ID.
+     * Используется при загрузке задач из хранилища.
      *
      * @param id идентификатор задачи
      * @param name название задачи
@@ -49,9 +52,9 @@ public class Task {
      * @param startTime время начала выполнения
      * @param duration продолжительность выполнения
      */
-    public Task(final int id, final String name, final String description,
-                final Status status, final LocalDateTime startTime,
-                final Duration duration) {
+    public Task(int id, String name, String description,
+                Status status, LocalDateTime startTime,
+                Duration duration) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,128 +64,82 @@ public class Task {
     }
 
     /**
-     * Конструктор для создания задачи без времени выполнения.
+     * Конструктор для создания задачи без указания времени выполнения.
      *
      * @param id идентификатор задачи
      * @param name название задачи
      * @param description описание задачи
      * @param status статус задачи
      */
-    public Task(final int id, final String name, final String description,
-                final Status status) {
+    public Task(int id, String name, String description, Status status) {
         this(id, name, description, status, null, Duration.ZERO);
     }
 
     /**
-     * Конструктор копирования.
+     * Конструктор копирования. Создает новую задачу на основе существующей.
      *
-     * @param other задача для копирования
+     * @param other задача, которую нужно скопировать
      */
-    public Task(final Task other) {
+    public Task(Task other) {
         this(other.id, other.name, other.description, other.status,
                 other.startTime, other.duration);
     }
 
-    /**
-     * Возвращает идентификатор задачи.
-     *
-     * @return идентификатор задачи
-     */
+    // Геттеры и сеттеры
+
     public int getId() {
         return id;
     }
 
-    /**
-     * Устанавливает идентификатор задачи.
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * Возвращает название задачи.
-     *
-     * @return название задачи
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Устанавливает название задачи.
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Возвращает описание задачи.
-     *
-     * @return описание задачи
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Устанавливает описание задачи.
-     */
-    public void setDescription(String Description) {
-        this.description = Description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    /**
-     * Возвращает статус задачи.
-     *
-     * @return статус задачи
-     */
     public Status getStatus() {
         return status;
     }
 
-    /**
-     * Устанавливает статус задачи.
-     */
-    public void setStatus(Status Status) {
-        this.status = Status;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    /**
-     * Возвращает время начала выполнения задачи.
-     *
-     * @return время начала
-     */
     public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    /**
-     * Устанавливает время начала выполнения задачи.
-     */
-    public void setStartTime(LocalDateTime StartTime) {
-        this.startTime = StartTime;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    /**
-     * Возвращает продолжительность выполнения задачи.
-     *
-     * @return продолжительность
-     */
     public Duration getDuration() {
         return duration;
     }
 
-    /**
-     * Устанавливает продолжительность выполнения задачи.
-     */
-    public void setDuration(Duration Duration) {
-        this.duration = Duration;
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
     /**
      * Возвращает время завершения задачи.
+     * Рассчитывается как время начала плюс продолжительность.
      *
-     * @return время завершения или null, если задача не запланирована
+     * @return время завершения или null, если время начала не задано
      */
     public LocalDateTime getEndTime() {
         if (startTime == null || duration == null) {
@@ -193,6 +150,7 @@ public class Task {
 
     /**
      * Возвращает тип задачи.
+     * В базовом классе всегда возвращает "TASK".
      *
      * @return строковое представление типа задачи
      */
